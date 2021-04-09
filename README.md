@@ -1,4 +1,4 @@
-# PGR208-2021-Android-exam
+# PGR208 Android Exam 2021
 ## CryptoCurrency App
 
 
