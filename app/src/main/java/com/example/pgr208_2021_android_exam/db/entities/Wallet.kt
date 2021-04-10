@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "wallet")
-class wallet(
+class Wallet(
     @PrimaryKey
     @ColumnInfo(name = "crypto_type")
     val cryptoType: String,
