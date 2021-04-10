@@ -1,5 +1,6 @@
 package com.example.pgr208_2021_android_exam.database.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -12,7 +13,7 @@ interface TransactionDAO {
     suspend fun insert(transaction: Transaction)
 
     @Query("SELECT * FROM transaction_table")
-    suspend fun fetchAll(): List<Transaction>
+     fun fetchAll(): LiveData<List<Transaction>>
 
     @Query("select * from transaction_table where crypto_type = :ct")
     suspend fun getTransactionByCrypto(ct: String): List<Transaction>
