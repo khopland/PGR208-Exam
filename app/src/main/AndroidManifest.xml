@@ -12,6 +12,7 @@
         <activity android:name=".ui.screens.TransactionActivity"></activity>
         <activity android:name=".ui.screens.PortfolioActivity" />
         <activity android:name=".ui.screens.OverviewActivity" /> <!-- android:theme="@style/splashScreenTheme"> -->
+        <activity android:name=".Overview"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
