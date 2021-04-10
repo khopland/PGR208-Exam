@@ -5,23 +5,21 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.Transaction
-
-
-const val DATABASE_NAME: String = "stonks_database"
-
+/*
 @Database(entities = [Transaction::class], version = 1)
-abstract class DataBase : RoomDatabase() {
+abstract class TransDB : RoomDatabase() {
     abstract fun transactionDao(): TransactionDAO
 
     companion object {
-        private var db: DataBase? = null
+        private var db: TransDB? = null
 
-        fun getDatabase(context: Context): DataBase {
+        fun getDatabase(context: Context): TransDB {
             val newDb =
-                db ?: Room.databaseBuilder(context, DataBase::class.java, DATABASE_NAME).build()
+                db ?: Room.databaseBuilder(context, TransDB::class.java, "stonks_database")
+                    .build()
             return newDb.also {
                 db = it
             }
         }
     }
-}
+}*/

@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey
 import java.time.LocalDateTime
 
 @Entity(tableName = "transaction_table")
-class Transaction(
+data class Transaction(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Long = 0,
+    val id: Long ,
     @NonNull
     @ColumnInfo(name = "selling")
     val selling: Boolean,
@@ -22,7 +22,7 @@ class Transaction(
     val conversionRate: Long,
     @NonNull
     @ColumnInfo(name = "crypto_type")
-    val cryptoType: Wallet,
+    val cryptoType: String,
     @NonNull
     @ColumnInfo(name = "time_date")
     val timeDate: LocalDateTime
