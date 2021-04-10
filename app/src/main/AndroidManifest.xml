@@ -8,8 +8,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/splashScreenTheme">
-<!--        android:theme="@style/Theme.PGR2082021Androidexam"-->
+        android:theme="@style/Theme.PGR2082021Androidexam">
+        <activity android:name=".ui.screens.TransactionActivity"></activity>
+        <activity android:name=".ui.screens.PortfolioActivity" />
+        <activity android:name=".ui.screens.OverviewActivity" /> <!-- android:theme="@style/splashScreenTheme"> -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
