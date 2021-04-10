@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.pgr208_2021_android_exam.R
 
-class PortfolioFragment : Fragment() {
+class PortfolioFragment : Fragment(R.layout.fragment_portfolio) {
     companion object {
         @JvmStatic
         fun newInstance() = PortfolioFragment()

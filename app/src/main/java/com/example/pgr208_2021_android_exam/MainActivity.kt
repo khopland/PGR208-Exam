@@ -19,6 +19,10 @@ class MainActivity : AppCompatActivity() {
 
         val binding = ActivityMainBinding.inflate(layoutInflater);
         setContentView(binding.root)
+
+        // Go straight to overview...
+        startActivity(Intent(this@MainActivity, OverviewActivity::class.java))
+
     }
 
 }
