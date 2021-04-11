@@ -12,16 +12,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TransactionViewModel(application: Application) : AndroidViewModel(application) {
-    private val allData: LiveData<List<Transaction>>
     private val repository: TransactionRepository
 
     init {
         val transactionDao = DataBase.getDatabase(application).transactionDao()
         repository = TransactionRepository(transactionDao)
-        allData = repository.readAllTransaction
     }
 
-    fun addTransaction(transaction:Transaction){
+    fun addTransaction(transaction: Transaction) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.addTransaction(transaction)
         }

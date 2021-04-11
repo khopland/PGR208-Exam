@@ -13,8 +13,6 @@ interface TransactionDAO {
     suspend fun insert(transaction: Transaction)
 
     @Query("SELECT * FROM transaction_table")
-     fun fetchAll(): LiveData<List<Transaction>>
+     suspend fun fetchAll(): List<Transaction>
 
-    @Query("select * from transaction_table where crypto_type = :ct")
-    suspend fun getTransactionByCrypto(ct: String): List<Transaction>
 }

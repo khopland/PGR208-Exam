@@ -14,8 +14,8 @@ data class Transaction(
     @ColumnInfo(name = "selling")
     val selling: Boolean,
     @NonNull
-    @ColumnInfo(name = "amount")
-    val amount: Long,
+    @ColumnInfo(name = "dollar")
+    val dollar: Long,
     @NonNull
     @ColumnInfo(name = "conversion_rate")
     val conversionRate: Double,
