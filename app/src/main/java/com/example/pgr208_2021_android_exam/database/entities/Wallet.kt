@@ -9,8 +9,10 @@ import androidx.room.PrimaryKey
 data class Wallet(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "crypto_type")
+    //name of the crypto
     val cryptoType: String,
     @NonNull
     @ColumnInfo(name = "amount")
+    //the amount of crypto you own of the specific crypto
     val amount: Long
 )

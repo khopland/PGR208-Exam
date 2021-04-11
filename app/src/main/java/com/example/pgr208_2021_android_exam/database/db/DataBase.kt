@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.pgr208_2021_android_exam.database.entities.Transaction
 import com.example.pgr208_2021_android_exam.database.entities.Wallet
 
-@Database(entities = [Transaction::class, Wallet::class], version = 1)
+@Database(entities = [Transaction::class, Wallet::class], version = 1, exportSchema = false)
 abstract class DataBase : RoomDatabase() {
     abstract fun transactionDao(): DAO
 

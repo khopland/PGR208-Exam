@@ -12,19 +12,26 @@ class TransactionRepository(private val dao: DAO) {
         return dao.getWalletByCryptoType("dollar").amount
     }
 
+
+    //returns true if transaction went threw
     suspend fun addTransaction(t: Transaction): Boolean {
         return if (t.selling) selling(t)
         else buying(t)
-
     }
 
+    //to handle transaction if you are buying
     private suspend fun buying(t: Transaction): Boolean {
         return try {
             if (getDollar() > t.dollar) {
+                //to generate wallet if it dose not exist
                 if (!dao.walletExists(t.cryptoType))
                     dao.insertWallet(Wallet(t.cryptoType, 0))
-                reduceAmount("dollar", t.dollar)
-                inciseAmount(t.cryptoType, ((t.dollar * t.conversionRate).toLong()))
+                //transfer money fom dollar to crypto amount
+                reduceAmount(dao.getWalletByCryptoType("dollar"), t.dollar)
+                increaseAmount(
+                    dao.getWalletByCryptoType(t.cryptoType),
+                    ((t.dollar * t.conversionRate).toLong())
+                )
                 dao.insertTransaction(t)
                 true
             } else false
@@ -34,14 +41,15 @@ class TransactionRepository(private val dao: DAO) {
         }
     }
 
-
+    //handle transaction if you are selling
     private suspend fun selling(t: Transaction): Boolean {
         if (!dao.walletExists(t.cryptoType)) return false
+        val wallet = dao.getWalletByCryptoType(t.cryptoType)
         val changeValue = (t.dollar * t.conversionRate).toLong()
         return try {
-            if (dao.getWalletByCryptoType(t.cryptoType).amount > changeValue) {
-                inciseAmount("dollar", t.dollar)
-                reduceAmount(t.cryptoType, (changeValue))
+            if (wallet.amount >= changeValue) {
+                increaseAmount(dao.getWalletByCryptoType("dollar"), t.dollar)
+                reduceAmount(wallet, (changeValue))
                 dao.insertTransaction(t)
                 true
             } else false
@@ -51,13 +59,12 @@ class TransactionRepository(private val dao: DAO) {
         }
     }
 
-    private suspend fun reduceAmount(cryptoType: String, amount: Long) {
-        val oldWallet = dao.getWalletByCryptoType(cryptoType)
-        dao.updateWallet(oldWallet.copy(amount = oldWallet.amount - amount))
+    //reduce amount from a specific account
+    private suspend fun reduceAmount(wallet: Wallet, amount: Long) {
+        dao.updateWallet(wallet.copy(amount = wallet.amount - amount))
     }
-
-    private suspend fun inciseAmount(cryptoType: String, amount: Long) {
-        val oldWallet = dao.getWalletByCryptoType(cryptoType)
-        dao.updateWallet(oldWallet.copy(amount = oldWallet.amount + amount))
+    //increase amount from a specific account
+    private suspend fun increaseAmount(wallet: Wallet, amount: Long) {
+        dao.updateWallet(wallet.copy(amount = wallet.amount + amount))
     }
 }
