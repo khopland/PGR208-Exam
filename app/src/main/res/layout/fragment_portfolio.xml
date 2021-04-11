@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.screens.PortfolioFragment"
-    android:layout_margin="18dp">
+    android:layout_margin="18dp"
+    android:background="@drawable/background_img">
 
     <!-- Should be replaced by shared userPoints View? -->
     <TextView
@@ -17,8 +18,7 @@
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tv_calculation_description"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_calculation_description"
@@ -27,7 +27,7 @@
         android:padding="8dp"
         android:text="Your current points are based on the sum of your owned currencies current value in USD"
         android:textSize="23sp"
-        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/owned_currencies"
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/tv_title"
         app:layout_constraintBottom_toTopOf="@id/btn_transactions"
-        tools:listitem="@layout/currency_item"
+        tools:listitem="@layout/portfolio_currency_item"
         tools:itemCount="5"/>
 
     <Button

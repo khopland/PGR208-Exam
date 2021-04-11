@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Overview">
+    tools:context=".Overview"
+    android:background="@drawable/background_img">
 
     <TextView
         android:id="@+id/TW_userPoint"
@@ -18,7 +20,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:paddingTop="20dp"
         android:textSize="18sp"
-        android:textStyle="bold|italic" />
+        android:textStyle="bold|italic"
+        android:textColor="@color/white"/>
 
     <Button
         android:id="@+id/btn_portFolio"
@@ -26,8 +29,7 @@
         android:layout_height="wrap_content"
         android:text="Portfolio"
         android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/currencyList"
+        app:layout_constraintTop_toBottomOf="@id/TW_userPoint"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -35,6 +37,7 @@
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/btn_portFolio"
         app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -44,7 +47,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_portFolio"
-        tools:listitem="@layout/currency_item"
-        tools:itemCount="5"/>
+        tools:listitem="@layout/overview_currency_item"
+        tools:itemCount="5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

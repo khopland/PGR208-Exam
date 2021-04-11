@@ -1,15 +1,13 @@
 package com.example.pgr208_2021_android_exam
 
 import android.content.Intent
+import android.os.*
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import androidx.core.content.ContextCompat.startActivity
 import com.example.pgr208_2021_android_exam.databinding.ActivityMainBinding
 import com.example.pgr208_2021_android_exam.ui.screens.OverviewActivity
 import com.example.pgr208_2021_android_exam.ui.screens.PortfolioFragment
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,9 +18,12 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater);
         setContentView(binding.root)
 
-        // Go straight to overview...
-        startActivity(Intent(this@MainActivity, OverviewActivity::class.java))
+        // We took inspiration for this setup from the following video: https://www.youtube.com/watch?v=bRusWAEn5GA
+        val handler = Handler(Looper.getMainLooper())
 
+        handler.postDelayed({
+            startActivity(Intent(this@MainActivity, OverviewActivity::class.java))
+            finish()
+        }, 4000)
     }
-
 }
