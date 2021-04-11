@@ -13,48 +13,41 @@ class TransactionRepository(private val dao: DAO) {
     }
 
     suspend fun addTransaction(t: Transaction): Boolean {
-
-        return if (t.selling) {
-            selling(t)
-        } else {
-            buying(t)
-
-        }
-
+        return if (t.selling) selling(t)
+        else buying(t)
 
     }
 
     private suspend fun buying(t: Transaction): Boolean {
-        try {
+        return try {
             if (getDollar() > t.dollar) {
                 if (!dao.walletExists(t.cryptoType))
                     dao.insertWallet(Wallet(t.cryptoType, 0))
                 reduceAmount("dollar", t.dollar)
                 inciseAmount(t.cryptoType, ((t.dollar * t.conversionRate).toLong()))
                 dao.insertTransaction(t)
-                return true
-            }
-            return false
+                true
+            } else false
         } catch (e: Error) {
             print(e)
-            return false
+            false
         }
     }
 
 
     private suspend fun selling(t: Transaction): Boolean {
+        if (!dao.walletExists(t.cryptoType)) return false
         val changeValue = (t.dollar * t.conversionRate).toLong()
-        try {
+        return try {
             if (dao.getWalletByCryptoType(t.cryptoType).amount > changeValue) {
                 inciseAmount("dollar", t.dollar)
                 reduceAmount(t.cryptoType, (changeValue))
                 dao.insertTransaction(t)
-                return true
-            }
-            return false
+                true
+            } else false
         } catch (e: Error) {
             print(e)
-            return false
+            false
         }
     }
 
