@@ -9,8 +9,7 @@ import com.example.pgr208_2021_android_exam.database.entities.Wallet
 
 @Database(entities = [Transaction::class, Wallet::class], version = 1)
 abstract class DataBase : RoomDatabase() {
-    abstract fun transactionDao(): TransactionDAO
-    abstract fun walletDao(): WalletDAO
+    abstract fun transactionDao(): DAO
 
     companion object {
         private var db: DataBase? = null
