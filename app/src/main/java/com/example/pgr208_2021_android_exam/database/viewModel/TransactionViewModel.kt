@@ -16,6 +16,17 @@ class TransactionViewModel(application: Application) : AndroidViewModel(applicat
 
     private val _transactionLiveData: MutableLiveData<List<Transaction>> = MutableLiveData()
     val transactionLiveData: LiveData<List<Transaction>> = _transactionLiveData
+    val successLiveData: MutableLiveData<Boolean?> = MutableLiveData()
+/*
+yourViewModelObject.status.observe(this, Observer { status ->
+    status?.let {
+        //Reset status value at first to prevent multitriggering
+        //and to be available to trigger action again
+        yourViewModelObject.status.value = null
+        //Display Toast or snackbar
+    }
+})
+*/
 
     init {
         val transactionDao = DataBase.getDatabase(application).transactionDao()
@@ -26,7 +37,7 @@ class TransactionViewModel(application: Application) : AndroidViewModel(applicat
     //function to generate a new transaction
     fun addTransaction(transaction: Transaction) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.addTransaction(transaction)
+            successLiveData.postValue(repository.addTransaction(transaction))
         }
     }
 
@@ -36,5 +47,4 @@ class TransactionViewModel(application: Application) : AndroidViewModel(applicat
             _transactionLiveData.value = repository.getAllTransactions()
         }
     }
-
 }

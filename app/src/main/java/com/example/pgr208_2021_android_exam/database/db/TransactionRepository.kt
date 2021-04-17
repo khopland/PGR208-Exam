@@ -35,7 +35,7 @@ class TransactionRepository(private val dao: DAO) {
                 reduceAmount(dao.getWalletByCryptoType("USD"), t.dollar)
                 increaseAmount(
                     dao.getWalletByCryptoType(t.cryptoType),
-                    ((t.dollar * t.conversionRate).toLong())
+                    ((t.dollar / t.conversionRate))
                 )
                 dao.insertTransaction(t)
                 true
@@ -50,11 +50,11 @@ class TransactionRepository(private val dao: DAO) {
     private suspend fun selling(t: Transaction): Boolean {
         if (!dao.walletExists(t.cryptoType)) return false
         val wallet = dao.getWalletByCryptoType(t.cryptoType)
-        val changeValue = (t.dollar * t.conversionRate).toLong()
+        val changeValue = (t.dollar / t.conversionRate)
         return try {
             if (wallet.amount >= changeValue) {
-                increaseAmount(dao.getWalletByCryptoType("USD"), t.dollar)
-                reduceAmount(wallet, (changeValue))
+                increaseAmount(dao.getWalletByCryptoType("USD"), t.dollar.toDouble())
+                reduceAmount(wallet, changeValue.toLong())
                 dao.insertTransaction(t)
                 true
             } else false
@@ -70,39 +70,37 @@ class TransactionRepository(private val dao: DAO) {
     }
 
     //increase amount from a specific account
-    private suspend fun increaseAmount(wallet: Wallet, amount: Long) {
+    private suspend fun increaseAmount(wallet: Wallet, amount: Double) {
         dao.updateWallet(wallet.copy(amount = wallet.amount + amount))
     }
 
 
     suspend fun start() {
         if (dao.fetchAllTransaction().isNullOrEmpty()) {
+            val tempTransaction = Transaction(
+                0,
+                "Installation Reward",
+                false,
+                10_000,
+                1.0,
+                "USD",
+                ""
+            )
+
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 dao.insertTransaction(
-                    Transaction(
-                        0,
-                        "Installation Reward",
-                        false,
-                        10_000,
-                        1.0,
-                        "USD",
-                        LocalDateTime.now().toString()
+                    tempTransaction.copy(
+                        timeDate = LocalDateTime.now().toString()
                     )
                 )
             } else {
                 dao.insertTransaction(
-                    Transaction(
-                        0,
-                        "Installation Reward",
-                        false,
-                        10_000,
-                        1.0,
-                        "USD",
-                        (System.currentTimeMillis() / 1000).toString()
+                    tempTransaction.copy(
+                        timeDate = (System.currentTimeMillis() / 1000).toString()
                     )
                 )
             }
-            dao.insertWallet(Wallet("USD", 10_000.0))
+            dao.insertWallet(Wallet(tempTransaction.cryptoType, tempTransaction.dollar.toDouble()))
         }
     }
 }
