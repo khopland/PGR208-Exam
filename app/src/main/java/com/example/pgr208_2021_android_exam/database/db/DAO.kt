@@ -14,7 +14,7 @@ interface DAO {
     @Insert
     suspend fun insertTransaction(transaction: Transaction)
 
-    @Query("SELECT * FROM transaction_table")
+    @Query("SELECT * FROM crypto_transaction_table")
     suspend fun fetchAllTransaction(): List<Transaction>
 
     //Wallet
@@ -32,6 +32,6 @@ interface DAO {
     suspend fun getWalletByCryptoType(ct: String): Wallet
 
     @Query("SELECT * FROM wallet_table")
-    suspend fun fetchAllWallet(): List<Wallet>
+    suspend fun getAllWallet(): List<Wallet>
 
 }

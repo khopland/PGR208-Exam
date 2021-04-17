@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "transaction_table")
+@Entity(tableName = "crypto_transaction_table")
 data class Transaction(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -24,7 +24,7 @@ data class Transaction(
     val conversionRate: Double,
     @NonNull
     @ColumnInfo(name = "crypto_type")
-    //the name of crypto
+    //the shorthand of crypto "btc,eth"
     val cryptoType: String,
     @NonNull
     @ColumnInfo(name = "time_date")
