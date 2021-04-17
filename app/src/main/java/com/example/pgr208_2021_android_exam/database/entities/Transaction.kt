@@ -11,6 +11,9 @@ data class Transaction(
     @ColumnInfo(name = "id")
     val id: Long,
     @NonNull
+    @ColumnInfo(name = "message")
+    val message: String,
+    @NonNull
     @ColumnInfo(name = "selling")
     //if you are selling set to true
     val selling: Boolean,
