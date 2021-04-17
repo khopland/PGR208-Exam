@@ -8,7 +8,7 @@ class TransactionRepository(private val dao: DAO) {
         return dao.fetchAllTransaction()
     }
 
-    suspend fun getDollar(): Long {
+    suspend fun getDollar(): Double {
         return dao.getWalletByCryptoType("dollar").amount
     }
 
@@ -25,7 +25,7 @@ class TransactionRepository(private val dao: DAO) {
             if (getDollar() > t.dollar) {
                 //to generate wallet if it dose not exist
                 if (!dao.walletExists(t.cryptoType))
-                    dao.insertWallet(Wallet(t.cryptoType, 0))
+                    dao.insertWallet(Wallet(t.cryptoType, 0.0))
                 //transfer money fom dollar to crypto amount
                 reduceAmount(dao.getWalletByCryptoType("dollar"), t.dollar)
                 increaseAmount(

@@ -14,5 +14,5 @@ data class Wallet(
     @NonNull
     @ColumnInfo(name = "amount")
     //the amount of crypto you own of the specific crypto
-    val amount: Long
+    val amount: Double
 )
