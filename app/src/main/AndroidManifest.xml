@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.pgr208_2021_android_exam">
 
-    <!-- android:theme="@style/splashScreenTheme"> -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -11,8 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PGR2082021Androidexam">
-        <activity android:name=".ui.screens.OverviewActivity" /> <!-- android:theme="@style/splashScreenTheme"> -->
-        <activity android:name=".Overview" />
+        <activity android:name=".ui.screens.OverviewActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

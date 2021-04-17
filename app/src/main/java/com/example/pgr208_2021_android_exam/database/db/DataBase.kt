@@ -20,6 +20,7 @@ abstract class DataBase : RoomDatabase() {
                     .build()
             return newDb.also {
                 db = it
+
             }
         }
     }

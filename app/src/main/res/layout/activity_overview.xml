@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Overview"
+    tools:context=".ui.screens.OverviewActivity"
     android:background="@drawable/background_img">
 
     <TextView
@@ -23,31 +23,23 @@
         android:textStyle="bold|italic"
         android:textColor="@color/white"/>
 
-    <Button
-        android:id="@+id/btn_portFolio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Portfolio"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/TW_userPoint"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/btn_portFolio"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/TW_userPoint"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/currencyList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_portFolio"
-        tools:listitem="@layout/overview_currency_item"
-        tools:itemCount="5" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/currencyList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/overview_currency_item"
+            tools:itemCount="5" />
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
