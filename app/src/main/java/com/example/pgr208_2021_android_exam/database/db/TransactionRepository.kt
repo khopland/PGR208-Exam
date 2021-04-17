@@ -7,6 +7,9 @@ class TransactionRepository(private val dao: DAO) {
     suspend fun getAllTransactions(): List<Transaction> {
         return dao.fetchAllTransaction()
     }
+    suspend fun getAllWallets(): List<Wallet> {
+        return dao.getAllWallet()
+    }
 
     suspend fun getDollar(): Double {
         return dao.getWalletByCryptoType("dollar").amount
