@@ -1,21 +1,13 @@
 package com.example.pgr208_2021_android_exam.ui.screens
 
-import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pgr208_2021_android_exam.database.viewModel.PointsViewModel
 import com.example.pgr208_2021_android_exam.databinding.ActivityOverviewBinding
 import com.example.pgr208_2021_android_exam.ui.recyclerview.CurrencyAdapter
@@ -62,7 +54,6 @@ class OverviewActivity : AppCompatActivity() {
 
         pointsViewModel = ViewModelProvider(this).get(PointsViewModel::class.java)
 
-        val currencyRecycleView = binding.currencyList
         pointsViewModel.pointsLiveData.observe(this, { d ->
             val res = d.toString()+ "00"
             binding.TWUserPoint.text = "Points : ${
