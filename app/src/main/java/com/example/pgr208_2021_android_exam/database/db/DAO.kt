@@ -21,7 +21,7 @@ interface DAO {
     @Update
     suspend fun updateWallet(wallet: Wallet)
 
-    @Query("SELECT EXISTS (SELECT 1 FROM wallet_table WHERE crypto_type = :ct)")
+    @Query("SELECT EXISTS (SELECT * FROM wallet_table WHERE crypto_type = :ct)")
     suspend fun walletExists(ct: String): Boolean
 
 
