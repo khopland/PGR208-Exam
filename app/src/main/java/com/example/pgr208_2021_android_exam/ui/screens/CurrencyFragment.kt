@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.pgr208_2021_android_exam.R
 import com.example.pgr208_2021_android_exam.data.domain.CryptoCurrency
-import com.example.pgr208_2021_android_exam.data.domain.getImg
+import com.example.pgr208_2021_android_exam.data.getImg
 import com.example.pgr208_2021_android_exam.database.viewModel.WalletViewModel
 import com.example.pgr208_2021_android_exam.databinding.FragmentCurrencyBinding
 
