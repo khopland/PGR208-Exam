@@ -1,5 +1,6 @@
 package com.example.pgr208_2021_android_exam.ui.screens
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -40,6 +41,7 @@ class CurrencyFragment(private val cryptoCurrency: CryptoCurrency) :
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -52,7 +54,7 @@ class CurrencyFragment(private val cryptoCurrency: CryptoCurrency) :
                     this.currencyText.text = "you don't have this crypto"
                 } else {
                     this.currencyText.text =
-                        "you have ${wallet.amount} of ${wallet.cryptoType}\n " +
+                                "you have ${wallet.amount} of ${wallet.cryptoType}\n " +
                                 "${wallet.amount} x ${cryptoCurrency.priceInUSD}\n " +
                                 "value ${(wallet.amount * cryptoCurrency.priceInUSD)} USD"
                 }

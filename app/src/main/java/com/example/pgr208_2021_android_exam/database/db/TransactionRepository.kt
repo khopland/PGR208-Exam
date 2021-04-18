@@ -1,5 +1,6 @@
 package com.example.pgr208_2021_android_exam.database.db
 
+import android.util.Log
 import com.example.pgr208_2021_android_exam.database.entities.Transaction
 import com.example.pgr208_2021_android_exam.database.entities.Wallet
 import java.time.LocalDateTime
@@ -16,7 +17,6 @@ class TransactionRepository(private val dao: DAO) {
     private suspend fun getDollar(): Double {
         return dao.getWalletByCryptoType("USD").amount
     }
-
 
     //returns true if transaction went threw
     suspend fun addTransaction(t: Transaction): Boolean {
@@ -75,7 +75,7 @@ class TransactionRepository(private val dao: DAO) {
     }
 
 
-    suspend fun start() {
+    suspend fun start(): Boolean? {
         if (dao.fetchAllTransaction().isNullOrEmpty()) {
             val tempTransaction = Transaction(
                 0,
@@ -86,21 +86,40 @@ class TransactionRepository(private val dao: DAO) {
                 "USD",
                 ""
             )
-
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                dao.insertTransaction(
-                    tempTransaction.copy(
-                        timeDate = LocalDateTime.now().toString()
+            try {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    dao.insertTransaction(
+                        tempTransaction.copy(
+                            timeDate = LocalDateTime.now().toString()
+                        )
+                    )
+                } else {
+                    dao.insertTransaction(
+                        tempTransaction.copy(
+                            timeDate = (System.currentTimeMillis() / 1000).toString()
+                        )
+                    )
+                }
+                dao.insertWallet(
+                    Wallet(
+                        tempTransaction.cryptoType,
+                        tempTransaction.dollar.toDouble()
                     )
                 )
-            } else {
-                dao.insertTransaction(
-                    tempTransaction.copy(
-                        timeDate = (System.currentTimeMillis() / 1000).toString()
-                    )
-                )
+                return true
+            } catch (e: Exception) {
+                Log.e("Error with start transaction", e.toString())
             }
-            dao.insertWallet(Wallet(tempTransaction.cryptoType, tempTransaction.dollar.toDouble()))
+        }
+        return null
+    }
+
+    suspend fun getAllWallets(): List<Wallet>? {
+        return try {
+            dao.getAllWallet()
+        } catch (e: Exception) {
+            Log.e("getAllWallets", e.toString(), e)
+            null
         }
     }
 }

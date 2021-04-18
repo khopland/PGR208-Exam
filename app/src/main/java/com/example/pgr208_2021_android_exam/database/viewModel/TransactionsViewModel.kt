@@ -2,27 +2,31 @@ package com.example.pgr208_2021_android_exam.database.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.pgr208_2021_android_exam.database.db.DataBase
 import com.example.pgr208_2021_android_exam.database.db.TransactionRepository
+import com.example.pgr208_2021_android_exam.database.entities.Transaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class StartViewModel(application: Application) : AndroidViewModel(application) {
+class TransactionsViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: TransactionRepository
-    val successLiveData: MutableLiveData<Boolean?> = MutableLiveData(null)
+
+    private val _transactionLiveData: MutableLiveData<List<Transaction>> = MutableLiveData()
+    val transactionLiveData: LiveData<List<Transaction>> = _transactionLiveData
 
     init {
         val transactionDao = DataBase.getDatabase(application).transactionDao()
         repository = TransactionRepository(transactionDao)
-        start()
+        getAllTransaction()
     }
 
-
-    private fun start() {
+    //function to get all transactions
+    fun getAllTransaction() {
         viewModelScope.launch(Dispatchers.IO) {
-            successLiveData.postValue(repository.start())
+            _transactionLiveData.postValue(repository.getAllTransactions())
         }
     }
 }
