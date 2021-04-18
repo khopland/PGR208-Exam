@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //startActivity(Intent(this@MainActivity, OverviewActivity::class.java))
+
         // We took inspiration for this setup from the following video: https://www.youtube.com/watch?v=bRusWAEn5GA
         val handler = Handler(Looper.getMainLooper())
 

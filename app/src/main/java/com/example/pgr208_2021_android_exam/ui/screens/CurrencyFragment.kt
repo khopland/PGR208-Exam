@@ -3,6 +3,7 @@ package com.example.pgr208_2021_android_exam.ui.screens
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,7 @@ class CurrencyFragment(private val cryptoCurrency: CryptoCurrency) :
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View? {
         mWalletViewModel = ViewModelProvider(this).get(WalletViewModel::class.java)
         return super.onCreateView(inflater, container, savedInstanceState)

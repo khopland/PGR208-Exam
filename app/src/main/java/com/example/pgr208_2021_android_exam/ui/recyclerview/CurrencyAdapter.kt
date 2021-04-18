@@ -4,8 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pgr208_2021_android_exam.R
 import com.example.pgr208_2021_android_exam.data.domain.CryptoCurrency
-import com.example.pgr208_2021_android_exam.data.getImg
+import com.example.pgr208_2021_android_exam.data.domain.getImg
+
 import com.example.pgr208_2021_android_exam.databinding.OverviewCurrencyItemBinding
 
 class CurrencyAdapter(private val context: Context, private val cryptoCurrencyList: List<CryptoCurrency>, val onClickListener: OnClickListener): RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder>() {
