@@ -14,7 +14,7 @@ class TransactionRepository(private val dao: DAO) {
         return dao.getWalletByCryptoType(cryptoType)
     }
 
-    private suspend fun getDollar(): Double {
+    suspend fun getDollar(): Double {
         return dao.getWalletByCryptoType("USD").amount
     }
 

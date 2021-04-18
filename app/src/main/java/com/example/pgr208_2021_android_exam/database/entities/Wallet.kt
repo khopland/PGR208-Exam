@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 data class Wallet(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "crypto_type")
-    //name of the crypto
+    //symbol of the crypto
     val cryptoType: String,
     @NonNull
     @ColumnInfo(name = "amount")

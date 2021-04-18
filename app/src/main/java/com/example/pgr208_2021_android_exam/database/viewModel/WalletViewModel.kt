@@ -14,12 +14,22 @@ import kotlinx.coroutines.launch
 class WalletViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: TransactionRepository
 
-    private val _walletLiveData: MutableLiveData<Wallet> = MutableLiveData()
-    val walletLiveData: LiveData<Wallet> = _walletLiveData
+    private val _walletLiveData: MutableLiveData<Wallet?> = MutableLiveData(null)
+    val walletLiveData: LiveData<Wallet?> = _walletLiveData
+
+    private val _haveDollar: MutableLiveData<Number> = MutableLiveData()
+    val Dollar: LiveData<Number> = _haveDollar
 
     init {
         val transactionDao = DataBase.getDatabase(application).transactionDao()
         repository = TransactionRepository(transactionDao)
+        getDollar()
+    }
+
+    private fun getDollar() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _haveDollar.postValue(repository.getDollar())
+        }
     }
 
     //function to get all Wallets
