@@ -1,5 +1,6 @@
 package com.example.pgr208_2021_android_exam.ui.recyclerview
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pgr208_2021_android_exam.data.domain.CryptoCurrency
 import com.example.pgr208_2021_android_exam.data.getImg
 import com.example.pgr208_2021_android_exam.databinding.OverviewCurrencyItemBinding
+import kotlin.math.round
 
 class CurrencyAdapter(
     private val context: Context,
@@ -39,31 +41,31 @@ class CurrencyAdapter(
         private val context: Context,
         private val binding: OverviewCurrencyItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+
+        @SuppressLint("SetTextI18n")
         fun bind(cryptoCurrency: CryptoCurrency) {
             // symbol (BTC)
             // name (Bitcoin)
             // priceInUSD (the value in double)
             // changePercentInLast24Hr (positive / negative percentage change)
-            val tempChange = cryptoCurrency.changePercentInLast24Hr.toString() + "00"
-            val res = tempChange.substring(0, tempChange.indexOf('.') + 3) + "%"
+            val change24h = "${rounding(cryptoCurrency.changePercentInLast24Hr)}%"
+
             binding.apply {
                 tvCurrencySymbol.text = cryptoCurrency.symbol
                 tvCurrencyName.text = cryptoCurrency.name
-                tvCurrencyRate.text = cryptoCurrency.priceInUSD.toString()
-                tvCurrencyPercentageUpdate.text = res
-                if (res.startsWith("-")) {
+                tvCurrencyRate.text = "\$${rounding(cryptoCurrency.priceInUSD)}"
+                tvCurrencyPercentageUpdate.text = change24h
+                if (change24h.startsWith("-"))
                     tvCurrencyPercentageUpdate.setTextColor(Color.parseColor("#FF0000"))
-                }else{
+                else
                     tvCurrencyPercentageUpdate.setTextColor(Color.parseColor("#00FF00"))
 
-                }
             }
+            getImg(context, cryptoCurrency.symbol, binding.ivCurrencyIcon)
+        }
 
-            getImg(
-                context = context,
-                cryptoType = cryptoCurrency.symbol,
-                icon = binding.ivCurrencyIcon
-            )
+        private fun rounding(d: Double): Double {
+            return round((d * 100)) / 100
         }
     }
 

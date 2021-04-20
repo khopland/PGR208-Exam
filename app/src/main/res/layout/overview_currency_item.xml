@@ -65,6 +65,7 @@
         tools:text="-2.5%"
         android:layout_column="3"
         android:layout_row="1"
+        android:layout_gravity="end"
         android:textColor="@color/white"/>
 
 </com.google.android.material.circularreveal.CircularRevealGridLayout>
