@@ -4,17 +4,20 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pgr208_2021_android_exam.R
 import com.example.pgr208_2021_android_exam.data.domain.CryptoCurrency
-import com.example.pgr208_2021_android_exam.data.domain.getImg
-
+import com.example.pgr208_2021_android_exam.data.getImg
 import com.example.pgr208_2021_android_exam.databinding.OverviewCurrencyItemBinding
 
-class CurrencyAdapter(private val context: Context, private val cryptoCurrencyList: List<CryptoCurrency>, val onClickListener: OnClickListener): RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder>() {
+class CurrencyAdapter(
+    private val context: Context,
+    private val cryptoCurrencyList: List<CryptoCurrency>,
+    val onClickListener: OnClickListener
+) : RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
         // Create a binding of the inflated "overview_currency_item.xml"-file
-        val binding = OverviewCurrencyItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            OverviewCurrencyItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CurrencyViewHolder(context, binding)
     }
 
@@ -31,7 +34,10 @@ class CurrencyAdapter(private val context: Context, private val cryptoCurrencyLi
     override fun getItemCount(): Int = cryptoCurrencyList.size
 
     //class is holds the list view
-    class CurrencyViewHolder(private val context: Context, private val binding: OverviewCurrencyItemBinding): RecyclerView.ViewHolder(binding.root) {
+    class CurrencyViewHolder(
+        private val context: Context,
+        private val binding: OverviewCurrencyItemBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(cryptoCurrency: CryptoCurrency) {
             // symbol (BTC)
             // name (Bitcoin)
@@ -44,7 +50,11 @@ class CurrencyAdapter(private val context: Context, private val cryptoCurrencyLi
                 tvCurrencyPercentageUpdate.text = cryptoCurrency.changePercentInLast24Hr.toString()
             }
 
-            getImg(context = context, cryptoType = cryptoCurrency.symbol, icon = binding.ivCurrencyIcon)
+            getImg(
+                context = context,
+                cryptoType = cryptoCurrency.symbol,
+                icon = binding.ivCurrencyIcon
+            )
         }
     }
 

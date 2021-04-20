@@ -1,10 +1,10 @@
 package com.example.pgr208_2021_android_exam.ui.screens
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.pgr208_2021_android_exam.R
 import com.example.pgr208_2021_android_exam.database.viewModel.TransactionsViewModel

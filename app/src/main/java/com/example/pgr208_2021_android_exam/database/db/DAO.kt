@@ -1,6 +1,9 @@
 package com.example.pgr208_2021_android_exam.database.db
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 import com.example.pgr208_2021_android_exam.database.entities.Transaction
 import com.example.pgr208_2021_android_exam.database.entities.Wallet
 

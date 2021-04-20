@@ -17,7 +17,7 @@ private val retroFit = Retrofit.Builder()
 
 // Shared API-object that will be used to "access" the CoinCapService with
 object CoinCapApi {
-    val coinCapService: CoinCapService by lazy{
+    val coinCapService: CoinCapService by lazy {
         retroFit.create(CoinCapService::class.java)
     }
 }

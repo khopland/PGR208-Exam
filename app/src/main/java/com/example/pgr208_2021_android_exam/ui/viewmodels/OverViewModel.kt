@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.pgr208_2021_android_exam.data.CoinCapService
 import com.example.pgr208_2021_android_exam.data.domain.*
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -20,14 +19,14 @@ class OverViewModel(application: Application) : AndroidViewModel(application) {
     //Fetch all
     private val _cryptoCurrencies = MutableLiveData<List<CryptoCurrency>>()
     val cryptoCurrencies: LiveData<List<CryptoCurrency>>
-        get() =_cryptoCurrencies
+        get() = _cryptoCurrencies
 
     init {
         fetchAllCryptoCurrency()
     }
 
     // TODO: Prepare fetching list of cryptoCurrencies
-     fun fetchAllCryptoCurrency() {
+    fun fetchAllCryptoCurrency() {
         viewModelScope.launch(Dispatchers.IO) {
 
             try {
@@ -38,11 +37,10 @@ class OverViewModel(application: Application) : AndroidViewModel(application) {
                 _cryptoCurrencies.postValue(currencies)
             } catch (error: Exception) {
                 _error.postValue(error)
-                Log.d("fetchAll", coinCapService.getAllCrypto().toString() )
+                Log.d("fetchAll", coinCapService.getAllCrypto().toString())
             }
         }
     }
-
 
 
     //Fetch selected/clicked cryptoCurrency

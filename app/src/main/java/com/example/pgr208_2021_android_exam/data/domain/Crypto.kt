@@ -1,18 +1,8 @@
 package com.example.pgr208_2021_android_exam.data.domain
 
 
-import android.content.Context
-import android.graphics.drawable.Drawable
-import android.widget.ImageView
-import com.bumptech.glide.Glide
-import com.example.pgr208_2021_android_exam.ui.recyclerview.CurrencyAdapter
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import java.math.MathContext
-import java.math.RoundingMode
-import java.util.*
-import kotlin.math.roundToLong
-
 
 
 // NB: Same reason as above, but this time "data" is an array with nested objects...
@@ -45,8 +35,8 @@ data class CryptoListData(
  */
 @JsonClass(generateAdapter = true)
 data class CryptoData(
-        @Json(name = "data")
-        val crypto: Crypto
+    @Json(name = "data")
+    val crypto: Crypto
 
 )
 
@@ -130,19 +120,12 @@ fun fromDomainModel(model: CryptoCurrency): Crypto {
 // Our domain-model (the data we want to work with in our domain)
 // NB: I think that
 data class CryptoCurrency(
-        val type: String,
-        val symbol: String,
-        val name: String,
-        val priceInUSD: Double,
-        val changePercentInLast24Hr: Double,
-        val supply: Long,
+    val type: String,
+    val symbol: String,
+    val name: String,
+    val priceInUSD: Double,
+    val changePercentInLast24Hr: Double,
+    val supply: Long,
 )
 
-//fetches icon from static.coincap.io and makes
-fun getImg(context:Context, cryptoType: String, icon: ImageView) {
-        Glide.with(context)
-                .load("https://static.coincap.io/assets/icons/${cryptoType.toLowerCase(Locale.ROOT)}@2x.png")
-                .fitCenter()
-                .into(icon)
-}
 

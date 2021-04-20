@@ -1,13 +1,13 @@
 package com.example.pgr208_2021_android_exam.ui.screens
 
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pgr208_2021_android_exam.database.viewModel.PointsViewModel
 import com.example.pgr208_2021_android_exam.databinding.ActivityOverviewBinding
 import com.example.pgr208_2021_android_exam.ui.recyclerview.CurrencyAdapter
@@ -32,21 +32,22 @@ class OverviewActivity : AppCompatActivity() {
         viewModel = OverViewModel(application)
 
 
-
-        val currencyRecycleView =  binding.currencyList
+        val currencyRecycleView = binding.currencyList
 
 
 
         viewModel.cryptoCurrencies.observe(this, { cryptoList ->
-            currencyRecycleView.adapter = CurrencyAdapter(this, cryptoList, CurrencyAdapter.OnClickListener {
-                clickedCurrency ->
+            currencyRecycleView.adapter = CurrencyAdapter(
+                this,
+                cryptoList,
+                CurrencyAdapter.OnClickListener { clickedCurrency ->
 
-                // Set the selectedCurrency to the clicked-currency
-                viewModel.setSelectedCurrency(clickedCurrency)
+                    // Set the selectedCurrency to the clicked-currency
+                    viewModel.setSelectedCurrency(clickedCurrency)
 
-                // Clear the content of the fragmentContainer before replacing it...
-                binding.fragmentContainer.removeAllViewsInLayout()
-            })
+                    // Clear the content of the fragmentContainer before replacing it...
+                    binding.fragmentContainer.removeAllViewsInLayout()
+                })
             // LinearLayoutManager(this, RecyclerView.VERTICAL, false)
             currencyRecycleView.layoutManager = GridLayoutManager(this, 1)
         })
@@ -55,7 +56,7 @@ class OverviewActivity : AppCompatActivity() {
         pointsViewModel = ViewModelProvider(this).get(PointsViewModel::class.java)
 
         pointsViewModel.pointsLiveData.observe(this, { d ->
-            val res = d.toString()+ "00"
+            val res = d.toString() + "00"
             binding.TWUserPoint.text = "Points : ${
                 res.substring(0, res.indexOf('.') + 3)
             } USD"
@@ -89,7 +90,6 @@ class OverviewActivity : AppCompatActivity() {
         viewModel.error.observe(this, { ex ->
             showError(this, ex)
         })
-
 
 
         // TODO: Remove this after setting up navigation...
