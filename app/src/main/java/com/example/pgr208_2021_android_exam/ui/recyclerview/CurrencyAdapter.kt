@@ -1,6 +1,7 @@
 package com.example.pgr208_2021_android_exam.ui.recyclerview
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -43,11 +44,19 @@ class CurrencyAdapter(
             // name (Bitcoin)
             // priceInUSD (the value in double)
             // changePercentInLast24Hr (positive / negative percentage change)
+            val tempChange = cryptoCurrency.changePercentInLast24Hr.toString() + "00"
+            val res = tempChange.substring(0, tempChange.indexOf('.') + 3) + "%"
             binding.apply {
                 tvCurrencySymbol.text = cryptoCurrency.symbol
                 tvCurrencyName.text = cryptoCurrency.name
                 tvCurrencyRate.text = cryptoCurrency.priceInUSD.toString()
-                tvCurrencyPercentageUpdate.text = cryptoCurrency.changePercentInLast24Hr.toString()
+                tvCurrencyPercentageUpdate.text = res
+                if (res.startsWith("-")) {
+                    tvCurrencyPercentageUpdate.setTextColor(Color.parseColor("#FF0000"))
+                }else{
+                    tvCurrencyPercentageUpdate.setTextColor(Color.parseColor("#00FF00"))
+
+                }
             }
 
             getImg(
