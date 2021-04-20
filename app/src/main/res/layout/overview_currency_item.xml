@@ -1,71 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.circularreveal.CircularRevealGridLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<com.google.android.material.circularreveal.CircularRevealGridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#2142C7"
-    android:padding="8dp"
     android:orientation="vertical"
-    >
+    android:padding="8dp">
 
     <ImageView
         android:id="@+id/iv_currency_icon"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_launcher_foreground"
-        android:layout_column="0"
         android:layout_row="0"
         android:layout_rowSpan="2"
+        android:layout_column="0"
+        android:contentDescription="Icon of the bitcoin"
+        android:src="@drawable/ic_launcher_foreground"
         tools:src="@tools:sample/avatars" />
 
     <TextView
-        android:paddingStart="8dp"
         android:id="@+id/tv_currency_symbol"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_column="1"
         android:layout_row="0"
+        android:layout_column="1"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:text="Symbol: ETH"
         android:textColor="@color/white"
         tools:text="Symbol: ETH" />
 
     <TextView
-        android:paddingStart="8dp"
         android:id="@+id/tv_currency_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_row="1"
         android:layout_column="1"
+        android:layout_gravity="start"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:text="Name: Etherum"
         android:textColor="@color/white"
         tools:text="Name: Etherum" />
 
 
     <TextView
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
         android:id="@+id/tv_currency_rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rate: 1683.5"
-        tools:text="Rate: 1683.5"
-        android:layout_column="2"
         android:layout_row="1"
-        android:layout_gravity="fill_vertical"
-        android:textColor="@color/white"/>
+        android:layout_column="2"
+        android:layout_columnWeight="2"
+        android:layout_gravity="end"
+        android:text="$1683.59"
+        android:textColor="@color/white"
+        tools:text="$1683.59" />
 
     <TextView
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
         android:id="@+id/tv_currency_percentage_update"
-        android:layout_width="wrap_content"
+        android:layout_width="109dp"
         android:layout_height="wrap_content"
-        android:text="-2.5%"
-        tools:text="-2.5%"
-        android:layout_column="3"
         android:layout_row="1"
+        android:layout_column="4"
         android:layout_gravity="end"
-        android:textColor="@color/white"/>
+        android:gravity="end"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="-2.5%"
+        android:textColor="@color/white"
+        tools:text="-2.5%" />
 
 </com.google.android.material.circularreveal.CircularRevealGridLayout>
