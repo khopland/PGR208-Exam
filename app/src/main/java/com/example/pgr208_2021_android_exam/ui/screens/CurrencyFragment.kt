@@ -47,23 +47,23 @@ class CurrencyFragment(private val cryptoCurrency: CryptoCurrency) :
 
         binding = FragmentCurrencyBinding.bind(view)
         mWalletViewModel.getWallet(cryptoType = cryptoCurrency.symbol)
+        mWalletViewModel.walletLiveData.observe(viewLifecycleOwner, { wallet ->
+            if (wallet == null) {
+                binding.btnSell.isEnabled = false
+                binding.currencyText.text = "you don't have this crypto"
+            } else {
+                binding.btnSell.isEnabled = true
+                binding.currencyText.text =
+                    "you have ${wallet.amount} of ${wallet.cryptoType}\n " +
+                            "${wallet.amount} x ${cryptoCurrency.priceInUSD}\n " +
+                            "value ${(wallet.amount * cryptoCurrency.priceInUSD)} USD"
+            }
+        })
+        mWalletViewModel.Dollar.observe(viewLifecycleOwner, {
+            binding.btnBuy.isEnabled = (it != 0)
+        })
 
         binding.apply {
-            mWalletViewModel.walletLiveData.observe(viewLifecycleOwner, { wallet ->
-                if (wallet == null) {
-                    this.btnSell.isEnabled = false
-                    this.currencyText.text = "you don't have this crypto"
-                } else {
-                    this.btnSell.isEnabled = true
-                    this.currencyText.text =
-                        "you have ${wallet.amount} of ${wallet.cryptoType}\n " +
-                                "${wallet.amount} x ${cryptoCurrency.priceInUSD}\n " +
-                                "value ${(wallet.amount * cryptoCurrency.priceInUSD)} USD"
-                }
-            })
-            mWalletViewModel.Dollar.observe(viewLifecycleOwner, {
-                this.btnBuy.isEnabled = (it != 0)
-            })
             this.tvCurrencyName.text = cryptoCurrency.name
             this.tvCurrencySymbol.text = cryptoCurrency.symbol
             this.tvCurrencyRate.text = cryptoCurrency.priceInUSD.toString()
