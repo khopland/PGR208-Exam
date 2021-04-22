@@ -77,33 +77,21 @@ class TransactionRepository(private val dao: DAO) {
 
     suspend fun start(): Boolean? {
         if (dao.fetchAllTransaction().isNullOrEmpty()) {
-            val tempTransaction = Transaction(
+            val transaction = Transaction(
                 0,
                 "Installation Reward",
                 false,
                 10_000,
                 1.0,
                 "USD",
-                ""
+                LocalDateTime.now().toString()
             )
             try {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    dao.insertTransaction(
-                        tempTransaction.copy(
-                            timeDate = LocalDateTime.now().toString()
-                        )
-                    )
-                } else {
-                    dao.insertTransaction(
-                        tempTransaction.copy(
-                            timeDate = (System.currentTimeMillis() / 1000).toString()
-                        )
-                    )
-                }
+                dao.insertTransaction(transaction)
                 dao.insertWallet(
                     Wallet(
-                        tempTransaction.cryptoType,
-                        tempTransaction.dollar.toDouble()
+                        transaction.cryptoType,
+                        transaction.dollar.toDouble()
                     )
                 )
                 return true
