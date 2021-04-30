@@ -17,7 +17,7 @@ class WalletViewModel(application: Application) : AndroidViewModel(application) 
     private val _walletLiveData: MutableLiveData<Wallet?> = MutableLiveData(null)
     val walletLiveData: LiveData<Wallet?> = _walletLiveData
 
-    private val _haveDollar: MutableLiveData<Number> = MutableLiveData()
+        private val _haveDollar: MutableLiveData<Number> = MutableLiveData()
     val Dollar: LiveData<Number> = _haveDollar
 
     init {

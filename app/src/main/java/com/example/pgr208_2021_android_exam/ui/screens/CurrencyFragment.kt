@@ -2,51 +2,52 @@ package com.example.pgr208_2021_android_exam.ui.screens
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.pgr208_2021_android_exam.R
-import com.example.pgr208_2021_android_exam.data.domain.CryptoCurrency
+import androidx.navigation.fragment.findNavController
 import com.example.pgr208_2021_android_exam.data.getImg
 import com.example.pgr208_2021_android_exam.database.viewModel.WalletViewModel
 import com.example.pgr208_2021_android_exam.databinding.FragmentCurrencyBinding
+import com.example.pgr208_2021_android_exam.ui.viewmodels.CurrencyViewModel
 
-class CurrencyFragment(private val cryptoCurrency: CryptoCurrency) :
-    Fragment(R.layout.fragment_currency) {
+class CurrencyFragment : Fragment() {
     private lateinit var binding: FragmentCurrencyBinding
     private lateinit var mWalletViewModel: WalletViewModel
+    private lateinit var viewModel: CurrencyViewModel
 
     companion object {
         @JvmStatic
-        fun newInstance(currency: CryptoCurrency) = CurrencyFragment(currency)
+        fun newInstance() = CurrencyFragment()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?) : View {
 
+        binding = FragmentCurrencyBinding.inflate(inflater, container, false)
 
-        Log.d(this::class.java.simpleName, cryptoCurrency.toString())
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-
-    ): View? {
+        viewModel = ViewModelProvider(this).get(CurrencyViewModel::class.java)
         mWalletViewModel = ViewModelProvider(this).get(WalletViewModel::class.java)
-        return super.onCreateView(inflater, container, savedInstanceState)
+
+        return binding.root
     }
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentCurrencyBinding.bind(view)
+        // Extract arguments from navigation-Directions, passed from OverviewFragment
+        val args = CurrencyFragmentArgs.fromBundle(requireArguments())
+
+        val cryptoCurrency = args.cryptoCurrency
+
+        viewModel.setSelectedCurrency(currency = cryptoCurrency)
+
         mWalletViewModel.getWallet(cryptoType = cryptoCurrency.symbol)
+
         mWalletViewModel.walletLiveData.observe(viewLifecycleOwner, { wallet ->
             if (wallet == null) {
                 binding.btnSell.isEnabled = false
@@ -70,6 +71,13 @@ class CurrencyFragment(private val cryptoCurrency: CryptoCurrency) :
         }
 
         getImg(requireContext(), cryptoType = cryptoCurrency.symbol, icon = binding.ivCurrencyIcon)
-    }
 
+        binding.btnBuy.setOnClickListener {
+            findNavController().navigate(CurrencyFragmentDirections.actionCurrencyFragmentToCurrencyBuyFragment(cryptoCurrency.type))
+        }
+
+        binding.btnSell.setOnClickListener {
+            findNavController().navigate(CurrencyFragmentDirections.actionCurrencyFragmentToCurrencySellFragment(cryptoCurrency.type))
+        }
+    }
 }

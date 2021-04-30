@@ -3,7 +3,6 @@
     package="com.example.pgr208_2021_android_exam">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application

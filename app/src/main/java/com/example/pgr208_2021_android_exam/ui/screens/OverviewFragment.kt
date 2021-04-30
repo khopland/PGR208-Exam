@@ -1,0 +1,81 @@
+package com.example.pgr208_2021_android_exam.ui.screens
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.pgr208_2021_android_exam.R
+import com.example.pgr208_2021_android_exam.database.viewModel.PointsViewModel
+import com.example.pgr208_2021_android_exam.databinding.FragmentOverviewBinding
+import com.example.pgr208_2021_android_exam.ui.recyclerview.CurrencyAdapter
+import com.example.pgr208_2021_android_exam.ui.viewmodels.OverViewModel
+
+class OverviewFragment : Fragment(R.layout.fragment_overview) {
+    private lateinit var binding: FragmentOverviewBinding
+    private lateinit var viewModel: OverViewModel
+    private lateinit var pointsViewModel: PointsViewModel
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = OverviewFragment()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
+
+        // Inflate the layout for this fragment
+        binding = FragmentOverviewBinding.inflate(inflater, container, false);
+
+        // Instantiate the viewModel(s)
+        viewModel = ViewModelProvider(this).get(OverViewModel::class.java)
+        pointsViewModel = ViewModelProvider(this).get(PointsViewModel::class.java)
+
+        return binding.root
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        pointsViewModel.pointsLiveData.observe(viewLifecycleOwner, { d ->
+            val res = d.toString() + "00"
+            binding.TWUserPoint.text = "Points : ${
+                res.substring(0, res.indexOf('.') + 3)
+            } USD"
+        })
+
+        val currencyRecycleView =  binding.currencyList
+
+        viewModel.cryptoCurrencies.observe(viewLifecycleOwner, { cryptoList ->
+            currencyRecycleView.adapter = CurrencyAdapter(requireContext(), cryptoList, CurrencyAdapter.OnClickListener {
+                clickedCurrency ->
+
+                findNavController().navigate(OverviewFragmentDirections.actionOverviewFragmentToCurrencyFragment(clickedCurrency))
+            })
+            // LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+            currencyRecycleView.layoutManager = GridLayoutManager(requireContext(), 1)
+        })
+
+        // TODO: Move this somewhere else later, or find a better solution for handling the possible fetch-error
+        viewModel.error.observe(viewLifecycleOwner, { ex ->
+            showError(requireContext(), ex)
+        })
+
+        binding.TWUserPoint.setOnClickListener {
+            findNavController().navigate(OverviewFragmentDirections.actionOverviewFragmentToPortfolioFragment())
+        }
+    }
+}
+
+// TODO: Maybe move this into some kind of shared file later?
+private fun showError(context: Context, error: Exception) {
+    Toast.makeText(context, error.message.toString(), Toast.LENGTH_SHORT).show()
+}

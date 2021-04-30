@@ -10,36 +10,14 @@
     tools:context=".ui.screens.OverviewActivity"
     android:background="@drawable/background_img">
 
-    <TextView
-        android:id="@+id/TW_userPoint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="UserPoints"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:paddingTop="20dp"
-        android:textSize="18sp"
-        android:textStyle="bold|italic"
-        android:textColor="@color/white"/>
-
-
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
+    <!-- Nav Host fragment for navigation from OverviewFragment -->
+    <fragment
+        android:id="@+id/nav_host_overview"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintTop_toBottomOf="@id/TW_userPoint"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/currencyList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/overview_currency_item"
-            tools:itemCount="9" />
-
-    </FrameLayout>
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/overview_nav"
+        tools:ignore="FragmentTagUsage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,18 +12,13 @@ import com.example.pgr208_2021_android_exam.database.viewModel.TransactionsViewM
 
 class TransactionsFragment : Fragment() {
 
-    private lateinit var transitionsViewModel: TransactionsViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private lateinit var transactionsViewModel: TransactionsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        transitionsViewModel = ViewModelProvider(this).get(TransactionsViewModel::class.java)
+        transactionsViewModel = ViewModelProvider(this).get(TransactionsViewModel::class.java)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_transactions, container, false)
     }

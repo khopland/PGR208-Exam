@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
         startViewModel = ViewModelProvider(this).get(StartViewModel::class.java)
-        startViewModel.successLiveData.observe(this, Observer { status ->
+        startViewModel.successLiveData.observe(this, { status ->
             status?.let {
                 if (status) {
                     startViewModel.successLiveData.value = null
@@ -36,18 +36,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.splashScreenTheme)
-
-        val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        //startActivity(Intent(this@MainActivity, OverviewActivity::class.java))
-
-        // We took inspiration for this setup from the following video: https://www.youtube.com/watch?v=bRusWAEn5GA
-        val handler = Handler(Looper.getMainLooper())
-
-        handler.postDelayed({
-            startActivity(Intent(this@MainActivity, OverviewActivity::class.java))
-            finish()
-        }, 4000)
+        setContentView(R.layout.activity_main)
     }
 }

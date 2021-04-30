@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/tv_currency_volume"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintBottom_toBottomOf="parent"
         android:src="@drawable/ic_launcher_foreground"
         tools:src="@tools:sample/avatars" />

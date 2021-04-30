@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/overviewFragment">
+
+    <fragment
+        android:id="@+id/portfolioFragment"
+        android:name="com.example.pgr208_2021_android_exam.ui.screens.PortfolioFragment"
+        android:label="My Portfolio"
+        tools:layout="@layout/fragment_portfolio">
+        <action
+            android:id="@+id/action_portfolioFragment_to_transactionsFragment"
+            app:destination="@id/transactionsFragment"
+            app:popUpTo="@id/portfolioFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/transactionsFragment"
+        android:name="com.example.pgr208_2021_android_exam.ui.screens.TransactionsFragment"
+        android:label="Transactions"
+        tools:layout="@layout/fragment_transactions" />
+    <fragment
+        android:id="@+id/currencyFragment"
+        android:name="com.example.pgr208_2021_android_exam.ui.screens.CurrencyFragment"
+        android:label="Selected crypto currency"
+        tools:layout="@layout/fragment_currency">
+        <argument
+            android:name="cryptoCurrency"
+            app:argType="com.example.pgr208_2021_android_exam.data.domain.CryptoCurrency" />
+        <action
+            android:id="@+id/action_currencyFragment_to_currencyBuyFragment"
+            app:destination="@id/currencyBuyFragment"
+            app:popUpTo="@id/currencyFragment" />
+        <action
+            android:id="@+id/action_currencyFragment_to_currencySellFragment"
+            app:destination="@id/currencySellFragment"
+            app:popUpTo="@id/currencyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/overviewFragment"
+        android:name="com.example.pgr208_2021_android_exam.ui.screens.OverviewFragment"
+        android:label="Overview"
+        tools:layout="@layout/fragment_overview">
+        <action
+            android:id="@+id/action_overviewFragment_to_portfolioFragment"
+            app:destination="@id/portfolioFragment"
+            app:popUpTo="@id/overviewFragment" />
+        <action
+            android:id="@+id/action_overviewFragment_to_currencyFragment"
+            app:destination="@id/currencyFragment"
+            app:popUpTo="@id/overviewFragment" />
+        <argument
+            android:name="cryptoCurrency"
+            app:argType="com.example.pgr208_2021_android_exam.data.domain.CryptoCurrency" />
+    </fragment>
+    <fragment
+        android:id="@+id/currencyBuyFragment"
+        android:name="com.example.pgr208_2021_android_exam.ui.screens.CurrencyBuyFragment"
+        android:label="Buy currency"
+        tools:layout="@layout/currency_buy">
+        <argument
+            android:name="cryptoType"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/currencySellFragment"
+        android:name="com.example.pgr208_2021_android_exam.ui.screens.CurrencySellFragment"
+        android:label="Sell currency">
+        <argument
+            android:name="cryptoType"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

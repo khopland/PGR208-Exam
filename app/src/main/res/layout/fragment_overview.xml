@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_img"
+    tools:context=".ui.screens.OverviewFragment">
+
+    <TextView
+        android:id="@+id/TW_userPoint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="20dp"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        android:textColor="@color/white"
+        tools:text="Points: 10000.00 USD"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/currencyList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintVertical_bias="0.25"
+        app:layout_constraintTop_toBottomOf="@id/TW_userPoint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/overview_currency_item"
+        tools:itemCount="5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
