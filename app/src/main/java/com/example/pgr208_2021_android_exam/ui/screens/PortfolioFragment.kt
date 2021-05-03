@@ -14,21 +14,6 @@ import com.example.pgr208_2021_android_exam.database.viewModel.PointsViewModel
 import com.example.pgr208_2021_android_exam.ui.recyclerview.WalletAdapter
 import com.example.pgr208_2021_android_exam.ui.viewmodels.PortfolioViewModel
 
-/**
- * Layout:
- *  -> Shows user-points in "top header" (X)
- *  -> Info about how the user-points are calculated. (X)
- *  -> My portfolio-text. (X)
- *  -> Scrollable-list of user-owned crypto-currencies (RecyclerView). (X)
- *  --> getAllWallets from AllWalletsViewModel(?).
- *  --> Correct assumption :D.
- *  -> Button for navigation to Transactions. (X)
- *
- *  ViewModel refresh(es):
- *  -> User points refresh: PointsViewModel(?).
- *  -> User owned wallets refresh: AllWalletsViewModel(?).
- */
-
 class PortfolioFragment : Fragment() {
     private lateinit var binding: FragmentPortfolioBinding
     private lateinit var viewModel: PortfolioViewModel
@@ -75,7 +60,7 @@ class PortfolioFragment : Fragment() {
                 wallets?.let { existingWallets ->
                     // Give wallets to PortfolioViewModel when we got them
                     binding.ownedCurrencies.apply {
-                        adapter = WalletAdapter(requireContext(), viewModel.transformIntoOwnedWallets(existingWallets))
+                        adapter = WalletAdapter(viewModel.transformIntoOwnedWallets(existingWallets))
                         layoutManager = GridLayoutManager(requireContext(), 1)
                     }
                 }

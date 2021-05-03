@@ -52,7 +52,7 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
         val currencyRecycleView =  binding.currencyList
 
         viewModel.cryptoCurrencies.observe(viewLifecycleOwner, { cryptoList ->
-            currencyRecycleView.adapter = CurrencyAdapter(requireContext(), cryptoList, CurrencyAdapter.OnClickListener {
+            currencyRecycleView.adapter = CurrencyAdapter(cryptoList, CurrencyAdapter.OnClickListener {
                 clickedCurrency ->
 
                 findNavController().navigate(OverviewFragmentDirections.actionOverviewFragmentToCurrencyFragment(clickedCurrency))

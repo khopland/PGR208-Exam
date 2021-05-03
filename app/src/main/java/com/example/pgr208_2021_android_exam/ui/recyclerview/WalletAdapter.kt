@@ -10,13 +10,11 @@ import com.example.pgr208_2021_android_exam.data.getImg
 import com.example.pgr208_2021_android_exam.databinding.PortfolioCurrencyItemBinding
 import com.example.pgr208_2021_android_exam.ui.viewmodels.OwnedWallet
 
-class WalletAdapter(
-        private val context: Context,
-        private val list: List<OwnedWallet>) : RecyclerView.Adapter<WalletAdapter.WalletViewHolder>() {
+class WalletAdapter(private val list: List<OwnedWallet>) : RecyclerView.Adapter<WalletAdapter.WalletViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WalletViewHolder {
         val binding = PortfolioCurrencyItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return WalletViewHolder(context, binding)
+        return WalletViewHolder(parent.context, binding)
     }
 
     override fun onBindViewHolder(holder: WalletViewHolder, position: Int) {
@@ -43,7 +41,7 @@ class WalletAdapter(
             this.itemView.visibility = if (wallet.amount > 1) View.VISIBLE else View.GONE
 
             binding.apply {
-                getImg(context = context, cryptoType = wallet.cryptoType, binding.ivCurrencyIcon)
+                getImg(context = context, cryptoType = wallet.cryptoType, ivCurrencyIcon)
                 tvCurrencyVolume.text = "Amount: ${wallet.amount}"
                 tvCurrencyRate.text = "Rate: ${wallet.currencyRate}"
                 tvCurrencyTotalValue.text = "Total: ${wallet.totalInUSD} USD"

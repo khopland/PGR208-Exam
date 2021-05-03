@@ -12,7 +12,6 @@ import com.example.pgr208_2021_android_exam.data.rounding
 import com.example.pgr208_2021_android_exam.databinding.OverviewCurrencyItemBinding
 
 class CurrencyAdapter(
-    private val context: Context,
     private val list: List<CryptoCurrency>,
     val onClickListener: OnClickListener
 ) : RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder>() {
@@ -20,7 +19,7 @@ class CurrencyAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
         // Create a binding of the inflated "overview_currency_item.xml"-file
         val binding = OverviewCurrencyItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CurrencyViewHolder(context, binding)
+        return CurrencyViewHolder(parent.context, binding)
     }
 
     // method binds the data from the currency list
