@@ -2,10 +2,7 @@ package com.example.pgr208_2021_android_exam.database.viewModel
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.pgr208_2021_android_exam.data.CoinCapService
 import com.example.pgr208_2021_android_exam.data.domain.CoinCapApi
 import com.example.pgr208_2021_android_exam.data.domain.toDomainModel
@@ -20,6 +17,18 @@ class PointsViewModel(application: Application) : AndroidViewModel(application) 
 
     private val _pointsLiveData: MutableLiveData<Double?> = MutableLiveData()
     val pointsLiveData: LiveData<Double?> = _pointsLiveData
+
+    // Transforming current points into formatted "user points"
+    // example: 10000.0 => "Points: 10000.00 USD"
+    val userPoints: LiveData<String> = pointsLiveData.map { points ->
+
+        // initially points is: 10000.0
+        val res = "${points.toString()}00"
+        val valueWithDecimals = res.substring(0, res.indexOf('.') + 3)
+
+        // Return formatted text with prepared value
+        "Points: $valueWithDecimals USD"
+    }
 
     init {
         val transactionDao = DataBase.getDatabase(application).transactionDao()

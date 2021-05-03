@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
         startViewModel = ViewModelProvider(this).get(StartViewModel::class.java)
+
         startViewModel.successLiveData.observe(this, { status ->
             status?.let {
                 if (status) {
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+
         return super.onCreateView(name, context, attrs)
     }
 

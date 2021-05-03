@@ -6,25 +6,34 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.pgr208_2021_android_exam.data.domain.getImg
+import com.example.pgr208_2021_android_exam.data.getImg
+import com.example.pgr208_2021_android_exam.data.rounding
+import com.example.pgr208_2021_android_exam.database.viewModel.BuyAndSellViewModel
 import com.example.pgr208_2021_android_exam.databinding.CurrencySellBinding
 import com.example.pgr208_2021_android_exam.ui.viewmodels.CurrencyViewModel
+import kotlin.math.round
 
 class CurrencySellFragment : Fragment() {
     private lateinit var binding: CurrencySellBinding
     private lateinit var viewModel: CurrencyViewModel
+    private lateinit var buyAndSellViewModel: BuyAndSellViewModel
 
     companion object {
         @JvmStatic
         fun newInstance() = CurrencySellFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
 
         binding = CurrencySellBinding.inflate(inflater, container, false)
+
         viewModel = ViewModelProvider(this).get(CurrencyViewModel::class.java)
+        buyAndSellViewModel = ViewModelProvider(this).get(BuyAndSellViewModel::class.java)
 
         return binding.root
     }
@@ -41,24 +50,59 @@ class CurrencySellFragment : Fragment() {
                 // Currency info header
                 tvCurrencyName.text = cryptoCurrency.name
                 tvCurrencySymbol.text = cryptoCurrency.symbol
-                tvCurrencyRate.text = cryptoCurrency.priceInUSD.toString()
+                val currencyRate = "$${rounding(cryptoCurrency.priceInUSD)}"
+                tvCurrencyRate.text = currencyRate
                 // Currency sell parts
                 tvCryptoCurrencySymbol.text = cryptoCurrency.symbol
             }
         })
 
+        // Prevent the user from buying before filling out a crypto-value
+        binding.btnSell.isEnabled = false
+
         binding.tvCryptoValue.addTextChangedListener(textWatcher)
+
+        binding.btnSell.setOnClickListener {
+            buyAndSellViewModel.sell(
+                    isSelling = true,
+                    dollar = round(binding.tvDollarValue.text.toString().toDouble()).toLong(),
+                    conversionRate = binding.tvCurrencyRate.text.toString().substring(1).toDouble(),
+                    cryptoType = binding.tvCryptoCurrencySymbol.text.toString()
+            )
+        }
+
+        buyAndSellViewModel.successLiveData.observe(viewLifecycleOwner, { status ->
+            status?.let {
+                if (status) {
+                    buyAndSellViewModel.successLiveData.value = null
+                    val text = "you sold crypto"
+                    val duration = Toast.LENGTH_LONG
+                    val toast = Toast.makeText(requireContext(), text, duration)
+                    toast.show()
+                } else if (!status) {
+                    buyAndSellViewModel.successLiveData.value = null
+                    val text = "your transaction did not go through"
+                    val duration = Toast.LENGTH_LONG
+                    val toast = Toast.makeText(requireContext(), text, duration)
+                    toast.show()
+                }
+            }
+        })
     }
 
     private val textWatcher = object : TextWatcher {
 
-        override fun afterTextChanged(field: Editable?) {
-            if (field.isNullOrBlank()) return
+        override fun afterTextChanged(field: Editable) {
 
-            val currencyRate = binding.tvCurrencyRate.text.toString().toDouble()
-            val inputCryptoValue = binding.tvCryptoValue.text.toString().toDouble()
+            val currencyRate = binding.tvCurrencyRate.text.toString().substring(1).toDouble()
 
-            binding.tvDollarValue.text = "${inputCryptoValue * currencyRate}"
+            val inputCryptoValue = if (field.isBlank()) 0.0 else binding.tvCryptoValue.text.toString().toDouble()
+
+            val calculatedUSD = rounding(inputCryptoValue * currencyRate)
+
+            binding.tvDollarValue.text = "${rounding(inputCryptoValue * currencyRate)}"
+
+            binding.btnSell.isEnabled = (field.isNotBlank() && field.isNotEmpty()) && calculatedUSD >= 1
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

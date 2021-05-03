@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.example.pgr208_2021_android_exam.R
-import com.example.pgr208_2021_android_exam.data.domain.getImg
+import com.example.pgr208_2021_android_exam.data.getImg
+import com.example.pgr208_2021_android_exam.data.rounding
 import com.example.pgr208_2021_android_exam.database.viewModel.BuyAndSellViewModel
 import com.example.pgr208_2021_android_exam.databinding.CurrencyBuyBinding
 import com.example.pgr208_2021_android_exam.ui.viewmodels.CurrencyViewModel
@@ -34,6 +34,49 @@ class CurrencyBuyFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(CurrencyViewModel::class.java)
         buyAndSellViewModel = ViewModelProvider(this).get(BuyAndSellViewModel::class.java)
 
+        // Inflate the layout for this fragment
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Extract given navigation args
+        val args = CurrencyBuyFragmentArgs.fromBundle(requireArguments())
+
+        // populate the viewModel with updated info of the selected cryptoCurrency
+        viewModel.fetchCryptoCurrencyById(args.cryptoType)
+
+        // Fill in the "selected currency info header" with values...
+        viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, { cryptoCurrency ->
+            binding.apply {
+                getImg(context = requireContext(), cryptoType = cryptoCurrency.symbol, icon = binding.ivCurrencyIcon)
+                // Currency info header
+                tvCurrencyName.text = cryptoCurrency.name
+                tvCurrencySymbol.text = cryptoCurrency.symbol
+                val currencyRate = "$${rounding(cryptoCurrency.priceInUSD)}"
+                tvCurrencyRate.text = currencyRate
+                // Currency buy parts
+                tvCryptoCurrencySymbol.text = cryptoCurrency.symbol
+            }
+        })
+
+        // Prevent the user from buying before filling out a dollar-value
+        binding.btnBuy.isEnabled = false
+
+        // Watch for typed in USD-amount the user wants to spend
+        binding.tvDollarValue.addTextChangedListener(textWatcher)
+
+        // Give needed details for a transaction to buyAndSellViewModel
+        binding.btnBuy.setOnClickListener {
+            buyAndSellViewModel.buy(
+                    isSelling = false,
+                    dollar = binding.tvDollarValue.text.toString().toLong(),
+                    conversionRate = binding.tvCurrencyRate.text.toString().substring(1).toDouble(),
+                    cryptoType = binding.tvCryptoCurrencySymbol.text.toString()
+            )
+        }
+
         buyAndSellViewModel.successLiveData.observe(viewLifecycleOwner, { status ->
             status?.let {
                 if (status) {
@@ -44,48 +87,29 @@ class CurrencyBuyFragment : Fragment() {
                     toast.show()
                 } else if (!status) {
                     buyAndSellViewModel.successLiveData.value = null
-                    val text = "your transaction did not go threw"
+                    val text = "your transaction did not go through"
                     val duration = Toast.LENGTH_LONG
                     val toast = Toast.makeText(requireContext(), text, duration)
                     toast.show()
                 }
             }
         })
-
-        // Inflate the layout for this fragment
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val args = CurrencyBuyFragmentArgs.fromBundle(requireArguments())
-        viewModel.fetchCryptoCurrencyById(args.cryptoType)
-
-        viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, { cryptoCurrency ->
-            binding.apply {
-                getImg(context = requireContext(), cryptoType = cryptoCurrency.symbol, icon = binding.ivCurrencyIcon)
-                // Currency info header
-                tvCurrencyName.text = cryptoCurrency.name
-                tvCurrencySymbol.text = cryptoCurrency.symbol
-                tvCurrencyRate.text = cryptoCurrency.priceInUSD.toString()
-                // Currency buy parts
-                tvCryptoCurrencySymbol.text = cryptoCurrency.symbol
-            }
-        })
-
-        binding.tvDollarValue.addTextChangedListener(textWatcher)
     }
 
     private val textWatcher = object : TextWatcher {
 
-        override fun afterTextChanged(field: Editable?) {
-            if (field.isNullOrBlank()) return
+        override fun afterTextChanged(field: Editable) {
 
-            val currencyRate = binding.tvCurrencyRate.text.toString().toDouble()
-            val inputDollarValue = binding.tvDollarValue.text.toString().toInt()
+            // NB: ...substring(1) to get the values after currency sign ($)
+            val currencyRate = binding.tvCurrencyRate.text.toString().substring(1).toDouble()
 
-            binding.tvCalculatedCryptoValue.text = "${inputDollarValue / currencyRate}"
+            // Display "0" after the user removes all text in dollar-input field
+            val inputDollarValue = if (field.isBlank()) 0 else binding.tvDollarValue.text.toString().toInt()
+
+            // rounding to display value with 1-2 decimals
+            binding.tvCalculatedCryptoValue.text = "${rounding(inputDollarValue / currencyRate)}"
+
+            binding.btnBuy.isEnabled = field.isNotBlank() && field.isNotEmpty()
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

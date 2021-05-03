@@ -17,8 +17,8 @@ class WalletViewModel(application: Application) : AndroidViewModel(application) 
     private val _walletLiveData: MutableLiveData<Wallet?> = MutableLiveData(null)
     val walletLiveData: LiveData<Wallet?> = _walletLiveData
 
-        private val _haveDollar: MutableLiveData<Number> = MutableLiveData()
-    val Dollar: LiveData<Number> = _haveDollar
+    private val _dollar: MutableLiveData<Number> = MutableLiveData()
+    val dollar: LiveData<Number> = _dollar
 
     init {
         val transactionDao = DataBase.getDatabase(application).transactionDao()
@@ -26,13 +26,14 @@ class WalletViewModel(application: Application) : AndroidViewModel(application) 
         getDollar()
     }
 
+    // Function to get the current USD, you can spend on buying cryptoCurrency
     private fun getDollar() {
         viewModelScope.launch(Dispatchers.IO) {
-            _haveDollar.postValue(repository.getDollar())
+            _dollar.postValue(repository.getDollar())
         }
     }
 
-    //function to get all Wallets
+    //function to get wallet for the provided cryptoType
     fun getWallet(cryptoType: String) {
         viewModelScope.launch(Dispatchers.IO) {
             _walletLiveData.postValue(repository.getWallet(cryptoType))

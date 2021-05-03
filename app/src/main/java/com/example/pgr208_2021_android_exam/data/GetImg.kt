@@ -9,8 +9,9 @@ import java.util.*
 //fetches icon from static.coincap.io and makes
 fun getImg(context: Context, cryptoType: String, icon: ImageView) {
     Glide.with(context)
-        .load("https://static.coincap.io/assets/icons/${cryptoType.toLowerCase(Locale.ROOT)}@2x.png")
-        .fitCenter()
-        .placeholder(R.drawable.ic_generic)
-        .into(icon)
+            .load("https://static.coincap.io/assets/icons/${cryptoType.toLowerCase(Locale.ROOT)}@2x.png")
+            .fitCenter()
+            .placeholder(R.drawable.ic_generic)
+            .fallback(R.drawable.ic_generic)
+            .into(icon)
 }

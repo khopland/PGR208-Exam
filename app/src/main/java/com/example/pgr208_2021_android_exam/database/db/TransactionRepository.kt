@@ -51,10 +51,11 @@ class TransactionRepository(private val dao: DAO) {
         if (!dao.walletExists(t.cryptoType)) return false
         val wallet = dao.getWalletByCryptoType(t.cryptoType)
         val changeValue = (t.dollar / t.conversionRate)
+
         return try {
             if (wallet.amount >= changeValue) {
                 increaseAmount(dao.getWalletByCryptoType("USD"), t.dollar.toDouble())
-                reduceAmount(wallet, changeValue.toLong())
+                reduceAmount(wallet, changeValue)
                 dao.insertTransaction(t)
                 true
             } else false
@@ -65,9 +66,23 @@ class TransactionRepository(private val dao: DAO) {
     }
 
     //reduce amount from a specific account
-    private suspend fun reduceAmount(wallet: Wallet, amount: Long) {
-        dao.updateWallet(wallet.copy(amount = wallet.amount - amount))
+    // NB: taking in amount as a Number -
+    // so the function can handle updating crypto and USD wallet(s)
+    private suspend fun reduceAmount(wallet: Wallet, amount: Number) {
+        // Double: update crypto-wallet
+        // Long: update USD-wallet
+        // else -> not supported, don't change values
+        when (amount) {
+            is Double -> dao.updateWallet(wallet.copy(amount = wallet.amount - amount.toDouble()))
+            is Long -> dao.updateWallet(wallet.copy(amount = wallet.amount - amount.toLong()))
+            else -> dao.updateWallet(wallet.copy(amount = wallet.amount - 0))
+        }
     }
+
+    //reduce amount from a specific account
+//    private suspend fun reduceAmount(wallet: Wallet, amount: Long) {
+//        dao.updateWallet(wallet.copy(amount = wallet.amount - amount))
+//    }
 
     //increase amount from a specific account
     private suspend fun increaseAmount(wallet: Wallet, amount: Double) {

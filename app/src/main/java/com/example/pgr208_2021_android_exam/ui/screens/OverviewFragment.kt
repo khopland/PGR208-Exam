@@ -41,15 +41,12 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
         return binding.root
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        pointsViewModel.pointsLiveData.observe(viewLifecycleOwner, { d ->
-            val res = d.toString() + "00"
-            binding.TWUserPoint.text = "Points : ${
-                res.substring(0, res.indexOf('.') + 3)
-            } USD"
+        // Observe when the formatted userPoints-text is populated by the "pointsLiveData"
+        pointsViewModel.userPoints.observe(viewLifecycleOwner, { pointsText ->
+            binding.TWUserPoint.text = pointsText
         })
 
         val currencyRecycleView =  binding.currencyList

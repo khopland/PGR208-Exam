@@ -6,11 +6,10 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pgr208_2021_android_exam.R
 import com.example.pgr208_2021_android_exam.data.domain.CryptoCurrency
-import com.example.pgr208_2021_android_exam.data.domain.getImg
+import com.example.pgr208_2021_android_exam.data.getImg
+import com.example.pgr208_2021_android_exam.data.rounding
 import com.example.pgr208_2021_android_exam.databinding.OverviewCurrencyItemBinding
-import kotlin.math.round
 
 class CurrencyAdapter(
     private val context: Context,
@@ -62,10 +61,6 @@ class CurrencyAdapter(
 
             }
             getImg(context, cryptoCurrency.symbol, binding.ivCurrencyIcon)
-        }
-
-        private fun rounding(d: Double): Double {
-            return round((d * 100)) / 100
         }
     }
 

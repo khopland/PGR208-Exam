@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.pgr208_2021_android_exam.data.getImg
+import com.example.pgr208_2021_android_exam.data.rounding
 import com.example.pgr208_2021_android_exam.database.viewModel.WalletViewModel
 import com.example.pgr208_2021_android_exam.databinding.FragmentCurrencyBinding
 import com.example.pgr208_2021_android_exam.ui.viewmodels.CurrencyViewModel
+import kotlin.math.round
 
 class CurrencyFragment : Fragment() {
     private lateinit var binding: FragmentCurrencyBinding
@@ -54,20 +56,26 @@ class CurrencyFragment : Fragment() {
                 binding.currencyText.text = "you don't have this crypto"
             } else {
                 binding.btnSell.isEnabled = true
+
+                val roundedAmount = rounding(wallet.amount)
+                val roundedPrice = rounding(cryptoCurrency.priceInUSD)
+
                 binding.currencyText.text =
-                    "you have ${wallet.amount} of ${wallet.cryptoType}\n " +
-                            "${wallet.amount} x ${cryptoCurrency.priceInUSD}\n " +
-                            "value ${(wallet.amount * cryptoCurrency.priceInUSD)} USD"
+                    "you have $roundedAmount of ${wallet.cryptoType}\n " +
+                            "$roundedAmount x ${roundedPrice}\n " +
+                            "value ${(rounding(roundedAmount * roundedPrice))} USD"
             }
         })
-        mWalletViewModel.Dollar.observe(viewLifecycleOwner, {
+
+        mWalletViewModel.dollar.observe(viewLifecycleOwner, {
             binding.btnBuy.isEnabled = (it != 0)
         })
 
+        // Update info in "selected currency info header"...
         binding.apply {
-            this.tvCurrencyName.text = cryptoCurrency.name
-            this.tvCurrencySymbol.text = cryptoCurrency.symbol
-            this.tvCurrencyRate.text = cryptoCurrency.priceInUSD.toString()
+            tvCurrencyName.text = cryptoCurrency.name
+            tvCurrencySymbol.text = cryptoCurrency.symbol
+            tvCurrencyRate.text = "$${rounding(cryptoCurrency.priceInUSD)}"
         }
 
         getImg(requireContext(), cryptoType = cryptoCurrency.symbol, icon = binding.ivCurrencyIcon)

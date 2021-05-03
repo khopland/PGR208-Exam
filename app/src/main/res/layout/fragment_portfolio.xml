@@ -11,10 +11,9 @@
 
     <!-- Should be replaced by shared userPoints View? -->
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_user_points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Place userpoints here..."
         android:textColor="@color/white"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,10 +29,10 @@
         android:text="Your current points are based on the sum of your owned currencies current value in USD"
         android:textSize="23sp"
         android:textColor="@color/white"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_user_points"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/owned_currencies"
+        app:layout_constraintBottom_toTopOf="@id/tv_title"
          />
 
     <TextView
