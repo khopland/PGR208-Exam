@@ -13,10 +13,6 @@ interface CoinCapService {
     @GET("assets/{id}")
     suspend fun getCryptoById(@Path("id") id: String): CryptoData
 
-    // Get list of all rates (crypt-currency and regular currency)
-    @GET("rates")
-    suspend fun getAllRates(): CurrencyRatesListData
-
     @GET("rates/{id}")
     suspend fun getRateById(@Path("id") id: String): CurrencyRateData
 }

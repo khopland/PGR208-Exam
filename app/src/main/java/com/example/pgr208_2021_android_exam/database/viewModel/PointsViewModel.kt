@@ -5,9 +5,11 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.pgr208_2021_android_exam.data.CoinCapService
 import com.example.pgr208_2021_android_exam.data.domain.CoinCapApi
+import com.example.pgr208_2021_android_exam.data.domain.fromCryptoCurrenciesToCoinRates
 import com.example.pgr208_2021_android_exam.data.domain.toDomainModel
 import com.example.pgr208_2021_android_exam.database.db.DataBase
 import com.example.pgr208_2021_android_exam.database.db.TransactionRepository
+import com.example.pgr208_2021_android_exam.ui.viewmodels.OwnedWalletsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -56,5 +58,23 @@ class PointsViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    fun refresh() {
+        viewModelScope.launch(Dispatchers.IO) {
+            var sum = 0.0
+            // need rates for ownedWallets...
+            val rates = fromCryptoCurrenciesToCoinRates(coinCapService.getAllCrypto().toDomainModel()).toMutableMap()
+            // Add missing USD-wallet...
+            rates["USD"] = coinCapService.getRateById("united-states-dollar").toDomainModel()
+
+            val ownedWalletsVM = OwnedWalletsViewModel(this@PointsViewModel.getApplication(), rates)
+
+            repository.getAllWallets()?.forEach { wallet ->
+                val ownedWallet = ownedWalletsVM.transformIntoOwnedWallet(wallet)
+                sum += ownedWallet.totalInUSD
+            }
+
+            _pointsLiveData.postValue(sum)
+        }
+    }
 
 }

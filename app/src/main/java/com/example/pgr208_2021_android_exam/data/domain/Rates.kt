@@ -21,11 +21,11 @@ import kotlinx.parcelize.Parcelize
     }
 
 */
-@JsonClass(generateAdapter = true)
-data class CurrencyRatesListData(
-        @Json(name = "data")
-        val rates: List<CurrencyRate>
-)
+//@JsonClass(generateAdapter = true)
+//data class CurrencyRatesListData(
+//        @Json(name = "data")
+//        val rates: List<CurrencyRate>
+//)
 
 /* NB: Contains cryptoCurrency and regular currency (fiat-currency)
 
