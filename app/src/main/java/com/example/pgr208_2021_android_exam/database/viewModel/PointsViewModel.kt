@@ -58,6 +58,7 @@ class PointsViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    // Used for refreshing user-points on screen(s)
     fun refresh() {
         viewModelScope.launch(Dispatchers.IO) {
             var sum = 0.0
@@ -72,6 +73,8 @@ class PointsViewModel(application: Application) : AndroidViewModel(application) 
                 val ownedWallet = ownedWalletsVM.transformIntoOwnedWallet(wallet)
                 sum += ownedWallet.totalInUSD
             }
+
+            println("how refreshing!")
 
             _pointsLiveData.postValue(sum)
         }

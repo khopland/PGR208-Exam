@@ -1,6 +1,5 @@
 package com.example.pgr208_2021_android_exam.ui.screens
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,9 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pgr208_2021_android_exam.R
 import com.example.pgr208_2021_android_exam.database.viewModel.PointsViewModel
@@ -46,12 +43,6 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Refresh userPoints when navigating back/to Overview
-        findNavController().addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.overviewFragment)
-                pointsViewModel.refresh()
-        }
-
         // Observe when the formatted userPoints-text is populated by the "pointsLiveData"
         pointsViewModel.userPoints.observe(viewLifecycleOwner, { pointsText ->
             binding.TWUserPoint.text = pointsText
@@ -77,6 +68,12 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
         binding.TWUserPoint.setOnClickListener {
             findNavController().navigate(OverviewFragmentDirections.actionOverviewFragmentToPortfolioFragment())
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        pointsViewModel.refresh()
     }
 }
 

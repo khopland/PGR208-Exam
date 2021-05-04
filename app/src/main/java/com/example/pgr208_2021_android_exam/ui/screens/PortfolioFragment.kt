@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.pgr208_2021_android_exam.R
 import com.example.pgr208_2021_android_exam.databinding.FragmentPortfolioBinding
 import com.example.pgr208_2021_android_exam.database.viewModel.PointsViewModel
 import com.example.pgr208_2021_android_exam.ui.recyclerview.WalletAdapter
@@ -69,5 +71,11 @@ class PortfolioFragment : Fragment() {
         binding.btnTransactions.setOnClickListener {
             it.findNavController().navigate(PortfolioFragmentDirections.actionPortfolioFragmentToTransactionsFragment())
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        pointsViewModel.refresh()
     }
 }
