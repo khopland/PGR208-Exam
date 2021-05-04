@@ -9,16 +9,16 @@ import androidx.navigation.findNavController
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pgr208_2021_android_exam.databinding.FragmentPortfolioBinding
-import com.example.pgr208_2021_android_exam.database.viewModel.AllWalletsViewModel
 import com.example.pgr208_2021_android_exam.database.viewModel.PointsViewModel
 import com.example.pgr208_2021_android_exam.ui.recyclerview.WalletAdapter
-import com.example.pgr208_2021_android_exam.ui.viewmodels.PortfolioViewModel
+import com.example.pgr208_2021_android_exam.ui.viewmodels.CurrencyViewModel
+import com.example.pgr208_2021_android_exam.ui.viewmodels.OwnedWalletsViewModel
 
 class PortfolioFragment : Fragment() {
     private lateinit var binding: FragmentPortfolioBinding
-    private lateinit var viewModel: PortfolioViewModel
-    private lateinit var allWalletsViewModel: AllWalletsViewModel
     private lateinit var pointsViewModel: PointsViewModel
+    private lateinit var ownedWalletsViewModel: OwnedWalletsViewModel
+    private lateinit var currencyViewModel: CurrencyViewModel
 
 
     companion object {
@@ -30,10 +30,8 @@ class PortfolioFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this).get(PortfolioViewModel::class.java)
-        allWalletsViewModel = ViewModelProvider(this).get(AllWalletsViewModel::class.java)
         pointsViewModel = ViewModelProvider(this).get(PointsViewModel::class.java)
-
+        currencyViewModel = ViewModelProvider(this).get(CurrencyViewModel::class.java)
 
         // Inflate the layout for this fragment
         binding = FragmentPortfolioBinding.inflate(layoutInflater, container, false)
@@ -51,18 +49,18 @@ class PortfolioFragment : Fragment() {
         // TODO: Research other ways to get the result below, without "observe nesting"
         // I know, this does not look too good, but it works for now...
         /* Reason/explanation:
-            -> To make PortfolioFragment able to see/react when the currencyRates-list has been filled, we need to observe it...
-            -> We need to have that list filled with values, as it is needed for transforming wallets.
-            -> The PortfolioViewModel needs a list of wallets to transform, so we have to observe that list also...
+            -> To make PortfolioFragment able to see/react when the currencyRates have been filled, we need to observe it...
+            -> We need to have that those values, as they are needed for transforming wallets.
+            -> The ownWalletsViewModel needs the rates for the transformation (wallets => ownedWallets) -
+               so the cleanest way was to pass it as a dependency.
          */
-        viewModel.currencyRates.observe(viewLifecycleOwner, {
-            allWalletsViewModel.walletsLiveData.observe(viewLifecycleOwner, { wallets ->
-                wallets?.let { existingWallets ->
-                    // Give wallets to PortfolioViewModel when we got them
-                    binding.ownedCurrencies.apply {
-                        adapter = WalletAdapter(viewModel.transformIntoOwnedWallets(existingWallets))
-                        layoutManager = GridLayoutManager(requireContext(), 1)
-                    }
+        currencyViewModel.currencyRates.observe(viewLifecycleOwner, { rates ->
+            ownedWalletsViewModel = OwnedWalletsViewModel(requireActivity().application, rates)
+
+            ownedWalletsViewModel.ownedWallets.observe(viewLifecycleOwner, { ownedWallets ->
+                binding.ownedCurrencies.apply {
+                    adapter = WalletAdapter(ownedWallets.values.toList())
+                    layoutManager = GridLayoutManager(requireContext(), 1)
                 }
             })
         })

@@ -5,12 +5,31 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
+/* Crypto/CryptoCurrency */
+
 // NB: Same reason as above, but this time "data" is an array with nested objects...
 @JsonClass(generateAdapter = true)
 data class CryptoListData(
         @Json(name = "data")
         val cryptoCurrencies: List<Crypto>
 )
+
+// Conversion from CryptoListData to a list in our domain model
+fun CryptoListData.toDomainModel(): List<CryptoCurrency> {
+
+    val (cryptoCurrencies) = this
+
+    return cryptoCurrencies.map { crypto ->
+        CryptoCurrency(
+                type = crypto.id,
+                symbol = crypto.symbol,
+                name = crypto.name,
+                priceInUSD = crypto.priceUsd.toDouble(),
+                changePercentInLast24Hr = crypto.changePercent24Hr.toDouble(),
+                supply = crypto.supply.toDouble().toLong()
+        )
+    }
+}
 
 // NB: We had to make a separate data class here because of the JSON-structure in the response from CoinCap
 /* Single bitcoin from CoinCap (wrapped in data)
@@ -38,26 +57,6 @@ data class CryptoData(
         val crypto: Crypto
 )
 
-/* NB: Contains cryptoCurrency and regular currency (fiat-currency)
-
-    {
-      "data": {
-        "id": "bitcoin",
-        "symbol": "BTC",
-        "currencySymbol": "₿",
-        "type": "crypto",
-        "rateUsd": "6444.3132749056076909"
-      },
-      "timestamp": 1536347871542
-    }
-
-*/
-@JsonClass(generateAdapter = true)
-data class CurrencyRatesListData(
-        @Json(name = "data")
-        val rates: List<CurrencyRate>
-)
-
 // Each crypto-currency wrapped in a "data"-field
 @JsonClass(generateAdapter = true)
 data class Crypto(
@@ -75,25 +74,6 @@ data class Crypto(
         val explorer: String?
 )
 
-/*
-    {
-        "id": "bitcoin",
-        "symbol": "BTC",
-        "currencySymbol": "₿",
-        "type": "crypto",
-        "rateUsd": "6444.3132749056076909"
-      },
- */
-
-@JsonClass(generateAdapter = true)
-data class CurrencyRate(
-        val id: String,
-        val symbol: String,
-        val currencySymbol: String?,
-        val type: String,
-        val rateUsd: String,
-)
-
 // Conversion from CryptoData to our domain model
 fun CryptoData.toDomainModel(): CryptoCurrency {
 
@@ -108,53 +88,6 @@ fun CryptoData.toDomainModel(): CryptoCurrency {
             changePercentInLast24Hr = crypto.changePercent24Hr.toDouble(),
             supply = crypto.supply.toDouble().toLong()
     )
-}
-
-// Conversion from CryptoListData to a list in our domain model
-fun CryptoListData.toDomainModel(): List<CryptoCurrency> {
-
-    val (cryptoCurrencies) = this
-
-    return cryptoCurrencies.map { crypto ->
-        CryptoCurrency(
-            type = crypto.id,
-            symbol = crypto.symbol,
-            name = crypto.name,
-            priceInUSD = crypto.priceUsd.toDouble(),
-            changePercentInLast24Hr = crypto.changePercent24Hr.toDouble(),
-            supply = crypto.supply.toDouble().toLong()
-        )
-    }
-}
-
-// Conversion from list of all rates (cryptoCurrency and regular currency) -
-// to a list of only cryptoCurrency-rates ( and USD :] ) in our domain-model
-fun CurrencyRatesListData.toDomainModel(): List<CoinRate> {
-
-    val (rates) = this
-
-    // Rate for a USD as a currency
-    val dollarRate = rates.find { it.symbol == "USD" }
-
-    val cryptoRates: MutableList<CurrencyRate> = mutableListOf()
-
-    // Chose to use if-check here as the "?.let"-variant wasn't as readable...
-    if (dollarRate != null) {
-        cryptoRates.add(dollarRate)
-    }
-
-    // Add in all the crypto-rates to the list
-    cryptoRates.addAll(rates.filter { it.type == "crypto" })
-
-    // Transform the cryptoRates into objects in our domain-model
-    return cryptoRates.map { rate ->
-        CoinRate(
-                name = rate.id,
-                symbol = rate.symbol,
-                type = rate.type,
-                rateUSD = rate.rateUsd.toDouble()
-        )
-    }
 }
 
 //function toDomain where we splits the list in
@@ -188,34 +121,4 @@ data class CryptoCurrency(
         val priceInUSD: Double,
         val changePercentInLast24Hr: Double,
         val supply: Long,
-) : Parcelable
-
-/* Examples below for each "type"
-
-    // Example for a "fiat-type" coin
-    {
-        "id": "united-states-dollar",
-        "symbol": "USD",
-        "currencySymbol": "$",
-        "type": "fiat",
-        "rateUsd": "1.0000000000000000"
-    }
-
-    // Example for a "crypto-type" coin
-    {
-        "id": "bitcoin",
-        "symbol": "BTC",
-        "currencySymbol": "₿",
-        "type": "crypto",
-        "rateUsd": "6444.3132749056076909"
-      },
-
-      (NB: only Bitcoin and USD have a non-null value for CurrencySymbol...)
- */
-@Parcelize
-data class CoinRate(
-        val name: String,
-        val symbol: String,
-        val type: String,
-        val rateUSD: Double,
 ) : Parcelable

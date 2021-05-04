@@ -13,12 +13,13 @@ import com.example.pgr208_2021_android_exam.data.rounding
 import com.example.pgr208_2021_android_exam.database.viewModel.WalletViewModel
 import com.example.pgr208_2021_android_exam.databinding.FragmentCurrencyBinding
 import com.example.pgr208_2021_android_exam.ui.viewmodels.CurrencyViewModel
+import com.example.pgr208_2021_android_exam.ui.viewmodels.OwnedWalletsViewModel
 import kotlin.math.round
 
 class CurrencyFragment : Fragment() {
     private lateinit var binding: FragmentCurrencyBinding
-    private lateinit var mWalletViewModel: WalletViewModel
     private lateinit var viewModel: CurrencyViewModel
+    private lateinit var mWalletViewModel: WalletViewModel
 
     companion object {
         @JvmStatic
@@ -73,12 +74,11 @@ class CurrencyFragment : Fragment() {
 
         // Update info in "selected currency info header"...
         binding.apply {
+            getImg(requireContext(), cryptoType = cryptoCurrency.symbol, icon = ivCurrencyIcon)
             tvCurrencyName.text = cryptoCurrency.name
             tvCurrencySymbol.text = cryptoCurrency.symbol
             tvCurrencyRate.text = "$${rounding(cryptoCurrency.priceInUSD)}"
         }
-
-        getImg(requireContext(), cryptoType = cryptoCurrency.symbol, icon = binding.ivCurrencyIcon)
 
         binding.btnBuy.setOnClickListener {
             findNavController().navigate(CurrencyFragmentDirections.actionCurrencyFragmentToCurrencyBuyFragment(cryptoCurrency.type))
