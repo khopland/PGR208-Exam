@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.pgr208_2021_android_exam.data.domain.CryptoCurrency
 import com.example.pgr208_2021_android_exam.data.getImg
 import com.example.pgr208_2021_android_exam.data.rounding
+import com.example.pgr208_2021_android_exam.database.entities.Wallet
 import com.example.pgr208_2021_android_exam.database.viewModel.WalletViewModel
 import com.example.pgr208_2021_android_exam.databinding.FragmentCurrencyBinding
 import com.example.pgr208_2021_android_exam.ui.viewmodels.CurrencyViewModel
@@ -53,8 +54,11 @@ class CurrencyFragment : Fragment() {
 
         viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, { selectedCurrency ->
             renderCurrencyHeaderInfo(selectedCurrency)
-            mWalletViewModel.walletLiveData.observe(viewLifecycleOwner, {
-                renderAmount(selectedCurrency)
+        })
+
+        mWalletViewModel.walletLiveData.observe(viewLifecycleOwner, {wallet ->
+            viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner,{
+                renderAmount(it,wallet)
             })
         })
 
@@ -81,8 +85,7 @@ class CurrencyFragment : Fragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun renderAmount(selectedCurrency: CryptoCurrency) {
-        val wallet = mWalletViewModel.walletLiveData.value
+    private fun renderAmount(selectedCurrency: CryptoCurrency,wallet:Wallet?) {
         if (wallet == null) {
             binding.btnSell.isEnabled = false
             binding.currencyText.text = "you don't have this crypto"
