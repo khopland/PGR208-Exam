@@ -57,6 +57,17 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_currency_symbol"
         android:layout_marginTop="24dp"
         tools:text="$54,044.64" />
+    <TextView
+        android:id="@+id/tv_you_have"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You have 1683.5"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@id/tv_currency_rate"
+        app:layout_constraintTop_toBottomOf="@+id/tv_currency_rate"
+        android:layout_marginTop="24dp"
+        tools:text="You have 1683.5" />
 
     <!-- Used to separate the "selected currency info header" from the rest -->
     <androidx.constraintlayout.widget.Guideline

@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.pgr208_2021_android_exam.data.getImg
 import com.example.pgr208_2021_android_exam.data.rounding
 import com.example.pgr208_2021_android_exam.database.viewModel.BuyAndSellViewModel
+import com.example.pgr208_2021_android_exam.database.viewModel.WalletViewModel
 import com.example.pgr208_2021_android_exam.databinding.CurrencySellBinding
 import com.example.pgr208_2021_android_exam.ui.viewmodels.CurrencyViewModel
 import kotlin.math.round
@@ -20,20 +21,25 @@ class CurrencySellFragment : Fragment() {
     private lateinit var binding: CurrencySellBinding
     private lateinit var viewModel: CurrencyViewModel
     private lateinit var buyAndSellViewModel: BuyAndSellViewModel
+    private lateinit var mWalletViewModel: WalletViewModel
+
 
     companion object {
         @JvmStatic
         fun newInstance() = CurrencySellFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         binding = CurrencySellBinding.inflate(inflater, container, false)
 
         viewModel = ViewModelProvider(this).get(CurrencyViewModel::class.java)
         buyAndSellViewModel = ViewModelProvider(this).get(BuyAndSellViewModel::class.java)
+        mWalletViewModel = ViewModelProvider(this).get(WalletViewModel::class.java)
 
         return binding.root
     }
@@ -45,8 +51,23 @@ class CurrencySellFragment : Fragment() {
         viewModel.fetchCryptoCurrencyById(args.cryptoType)
 
         viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, { cryptoCurrency ->
+            //TODO: not optimal observe in a observe
+            mWalletViewModel.getWallet(cryptoType = cryptoCurrency.symbol)
+            mWalletViewModel.walletLiveData.observe(viewLifecycleOwner, { wallet ->
+                binding.apply {
+                    if (wallet != null)
+                        tvYouHave.text = "You have ${wallet.amount}"
+                    else
+                        tvYouHave.text = ""
+                }
+            })
+
             binding.apply {
-                getImg(context = requireContext(), cryptoType = cryptoCurrency.symbol, icon = binding.ivCurrencyIcon)
+                getImg(
+                    context = requireContext(),
+                    cryptoType = cryptoCurrency.symbol,
+                    icon = binding.ivCurrencyIcon
+                )
                 // Currency info header
                 tvCurrencyName.text = cryptoCurrency.name
                 tvCurrencySymbol.text = cryptoCurrency.symbol
@@ -64,10 +85,10 @@ class CurrencySellFragment : Fragment() {
 
         binding.btnSell.setOnClickListener {
             buyAndSellViewModel.sell(
-                    isSelling = true,
-                    dollar = round(binding.tvDollarValue.text.toString().toDouble()).toLong(),
-                    conversionRate = binding.tvCurrencyRate.text.toString().substring(1).toDouble(),
-                    cryptoType = binding.tvCryptoCurrencySymbol.text.toString()
+                isSelling = true,
+                dollar = round(binding.tvDollarValue.text.toString().toDouble()).toLong(),
+                conversionRate = binding.tvCurrencyRate.text.toString().substring(1).toDouble(),
+                cryptoType = binding.tvCryptoCurrencySymbol.text.toString()
             )
         }
 
@@ -96,13 +117,15 @@ class CurrencySellFragment : Fragment() {
 
             val currencyRate = binding.tvCurrencyRate.text.toString().substring(1).toDouble()
 
-            val inputCryptoValue = if (field.isBlank()) 0.0 else binding.tvCryptoValue.text.toString().toDouble()
+            val inputCryptoValue =
+                if (field.isBlank()) 0.0 else binding.tvCryptoValue.text.toString().toDouble()
 
             val calculatedUSD = rounding(inputCryptoValue * currencyRate)
 
             binding.tvDollarValue.text = "${rounding(inputCryptoValue * currencyRate)}"
 
-            binding.btnSell.isEnabled = (field.isNotBlank() && field.isNotEmpty()) && calculatedUSD >= 1
+            binding.btnSell.isEnabled =
+                (field.isNotBlank() && field.isNotEmpty()) && calculatedUSD >= 1
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

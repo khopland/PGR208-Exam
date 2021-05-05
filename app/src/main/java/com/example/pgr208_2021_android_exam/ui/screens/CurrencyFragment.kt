@@ -2,10 +2,10 @@ package com.example.pgr208_2021_android_exam.ui.screens
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.pgr208_2021_android_exam.data.getImg
@@ -13,8 +13,6 @@ import com.example.pgr208_2021_android_exam.data.rounding
 import com.example.pgr208_2021_android_exam.database.viewModel.WalletViewModel
 import com.example.pgr208_2021_android_exam.databinding.FragmentCurrencyBinding
 import com.example.pgr208_2021_android_exam.ui.viewmodels.CurrencyViewModel
-import com.example.pgr208_2021_android_exam.ui.viewmodels.OwnedWalletsViewModel
-import kotlin.math.round
 
 class CurrencyFragment : Fragment() {
     private lateinit var binding: FragmentCurrencyBinding
@@ -26,9 +24,11 @@ class CurrencyFragment : Fragment() {
         fun newInstance() = CurrencyFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?) : View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         binding = FragmentCurrencyBinding.inflate(inflater, container, false)
 
@@ -52,7 +52,7 @@ class CurrencyFragment : Fragment() {
         mWalletViewModel.getWallet(cryptoType = cryptoCurrency.symbol)
 
         mWalletViewModel.walletLiveData.observe(viewLifecycleOwner, { wallet ->
-            if (wallet == null) {
+            if (wallet == null || wallet.amount == 0.0 || (wallet.amount * cryptoCurrency.priceInUSD) < 1) {
                 binding.btnSell.isEnabled = false
                 binding.currencyText.text = "you don't have this crypto"
             } else {
@@ -81,11 +81,19 @@ class CurrencyFragment : Fragment() {
         }
 
         binding.btnBuy.setOnClickListener {
-            findNavController().navigate(CurrencyFragmentDirections.actionCurrencyFragmentToCurrencyBuyFragment(cryptoCurrency.type))
+            findNavController().navigate(
+                CurrencyFragmentDirections.actionCurrencyFragmentToCurrencyBuyFragment(
+                    cryptoCurrency.type
+                )
+            )
         }
 
         binding.btnSell.setOnClickListener {
-            findNavController().navigate(CurrencyFragmentDirections.actionCurrencyFragmentToCurrencySellFragment(cryptoCurrency.type))
+            findNavController().navigate(
+                CurrencyFragmentDirections.actionCurrencyFragmentToCurrencySellFragment(
+                    cryptoCurrency.type
+                )
+            )
         }
     }
 }
