@@ -17,7 +17,7 @@ import com.example.pgr208_2021_android_exam.database.viewModel.BuyAndSellViewMod
 import com.example.pgr208_2021_android_exam.database.viewModel.WalletViewModel
 import com.example.pgr208_2021_android_exam.databinding.CurrencySellBinding
 import com.example.pgr208_2021_android_exam.ui.viewmodels.CurrencyViewModel
-import kotlin.math.round
+import kotlin.math.floor
 
 class CurrencySellFragment : Fragment() {
     private lateinit var binding: CurrencySellBinding
@@ -88,12 +88,23 @@ class CurrencySellFragment : Fragment() {
 
         binding.btnSell.setOnClickListener {
             binding.btnSell.isEnabled = false
-            buyAndSellViewModel.sell(
-                isSelling = true,
-                dollar = round(binding.tvDollarValue.text.toString().toDouble()).toLong(),
-                conversionRate = binding.tvCurrencyRate.text.toString().substring(1).toDouble(),
-                cryptoType = binding.tvCryptoCurrencySymbol.text.toString()
-            )
+            val cR =
+                viewModel.currencyRates.value?.get(binding.tvCryptoCurrencySymbol.text.toString())?.rateUSD
+            if (cR != null) {
+                buyAndSellViewModel.sell(
+                    isSelling = true,
+                    dollar = floor(binding.tvDollarValue.text.toString().toDouble()).toLong(),
+                    conversionRate = cR,
+                    cryptoType = binding.tvCryptoCurrencySymbol.text.toString()
+                )
+            } else {
+                val text =
+                    "your transaction did not go through,\nsomething went wrong with the conversion rate"
+                val duration = Toast.LENGTH_LONG
+                val toast = Toast.makeText(requireContext(), text, duration)
+                toast.show()
+                binding.btnSell.isEnabled = true
+            }
         }
 
         buyAndSellViewModel.successLiveData.observe(viewLifecycleOwner, { status ->
@@ -138,8 +149,7 @@ class CurrencySellFragment : Fragment() {
 
             val currencyRate = binding.tvCurrencyRate.text.toString().substring(1).toDouble()
 
-            val inputCryptoValue =
-                if (field.isBlank()) 0.0 else binding.tvCryptoValue.text.toString().toDouble()
+            val inputCryptoValue = if (field.isBlank() || field[0] == '.') 0.0  else binding.tvCryptoValue.text.toString().toDouble()
 
             val calculatedUSD = rounding(inputCryptoValue * currencyRate)
 
@@ -158,8 +168,9 @@ class CurrencySellFragment : Fragment() {
         super.onResume()
         viewModel.getAllRates()
         viewModel.currencyRates.observe(viewLifecycleOwner, {
-            binding.tvCurrencyRate.text =
-                it[binding.tvCryptoCurrencySymbol.text.toString()]?.rateUSD.toString()
+            val cr = it[binding.tvCryptoCurrencySymbol.text.toString()]?.rateUSD
+            if (cr != null)
+                binding.tvCurrencyRate.text = "$${rounding(cr)}"
         })
     }
 }

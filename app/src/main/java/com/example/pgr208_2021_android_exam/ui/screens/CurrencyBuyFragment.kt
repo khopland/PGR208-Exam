@@ -15,6 +15,7 @@ import com.example.pgr208_2021_android_exam.data.rounding
 import com.example.pgr208_2021_android_exam.database.viewModel.BuyAndSellViewModel
 import com.example.pgr208_2021_android_exam.databinding.CurrencyBuyBinding
 import com.example.pgr208_2021_android_exam.ui.viewmodels.CurrencyViewModel
+import kotlin.math.floor
 
 class CurrencyBuyFragment : Fragment() {
     private lateinit var binding: CurrencyBuyBinding
@@ -63,6 +64,8 @@ class CurrencyBuyFragment : Fragment() {
                 tvCurrencyRate.text = currencyRate
                 // Currency buy parts
                 tvCryptoCurrencySymbol.text = cryptoCurrency.symbol
+
+
             }
         })
 
@@ -75,12 +78,23 @@ class CurrencyBuyFragment : Fragment() {
         // Give needed details for a transaction to buyAndSellViewModel
         binding.btnBuy.setOnClickListener {
             binding.btnBuy.isEnabled = false
-            buyAndSellViewModel.buy(
-                isSelling = false,
-                dollar = binding.tvDollarValue.text.toString().toLong(),
-                conversionRate = binding.tvCurrencyRate.text.toString().substring(1).toDouble(),
-                cryptoType = binding.tvCryptoCurrencySymbol.text.toString()
-            )
+            val cR =
+                viewModel.currencyRates.value?.get(binding.tvCryptoCurrencySymbol.text.toString())?.rateUSD
+            if (cR != null) {
+                buyAndSellViewModel.buy(
+                    isSelling = false,
+                    dollar = floor(binding.tvDollarValue.text.toString().toDouble()).toLong(),
+                    conversionRate = cR,
+                    cryptoType = binding.tvCryptoCurrencySymbol.text.toString()
+                )
+            } else {
+                val text =
+                    "your transaction did not go through,\nsomething went wrong with the conversion rate"
+                val duration = Toast.LENGTH_LONG
+                val toast = Toast.makeText(requireContext(), text, duration)
+                toast.show()
+                binding.btnBuy.isEnabled = true
+            }
         }
 
         buyAndSellViewModel.successLiveData.observe(viewLifecycleOwner, { status ->
@@ -124,7 +138,7 @@ class CurrencyBuyFragment : Fragment() {
 
             // Display "0" after the user removes all text in dollar-input field
             val inputDollarValue =
-                if (field.isBlank()) 0 else binding.tvDollarValue.text.toString().toInt()
+                if (field.isBlank() || field[0] == '.') 0 else binding.tvDollarValue.text.toString().toInt()
 
             // rounding to display value with 1-2 decimals
             binding.tvCalculatedCryptoValue.text = "${rounding(inputDollarValue / currencyRate)}"
@@ -141,8 +155,9 @@ class CurrencyBuyFragment : Fragment() {
         super.onResume()
         viewModel.getAllRates()
         viewModel.currencyRates.observe(viewLifecycleOwner, {
-            binding.tvCurrencyRate.text =
-                it[binding.tvCryptoCurrencySymbol.text.toString()]?.rateUSD.toString()
+            val cr = it[binding.tvCryptoCurrencySymbol.text.toString()]?.rateUSD
+            if (cr != null)
+                binding.tvCurrencyRate.text = "$${rounding(cr)}"
         })
     }
 }
