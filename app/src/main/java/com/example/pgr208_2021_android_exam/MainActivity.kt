@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             status?.let {
                 if (status) {
                     startViewModel.successLiveData.value = null
-                    val text = "Congrats you have gotten your starter Pack!!!"
+                    val text = "Congrats you have gotten your starter Pack of 10000$!!!"
                     val duration = Toast.LENGTH_LONG
                     val toast = Toast.makeText(application, text, duration)
                     toast.show()
