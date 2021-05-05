@@ -1,5 +1,6 @@
 package com.example.pgr208_2021_android_exam.ui.screens
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.pgr208_2021_android_exam.data.getImg
 import com.example.pgr208_2021_android_exam.data.rounding
 import com.example.pgr208_2021_android_exam.database.viewModel.BuyAndSellViewModel
@@ -44,6 +46,7 @@ class CurrencySellFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -102,8 +105,16 @@ class CurrencySellFragment : Fragment() {
                     val duration = Toast.LENGTH_SHORT
                     val toast = Toast.makeText(requireContext(), text, duration)
                     toast.show()
+
+
+                    // Navigating back to CurrencyFragment after successful sell
+                    viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, {
+                        findNavController().navigate(CurrencySellFragmentDirections.actionCurrencySellFragmentToCurrencyFragment(it))
+                    })
+
                     binding.btnSell.isEnabled = true
                     mWalletViewModel.getWallet(cryptoType = binding.tvCryptoCurrencySymbol.text.toString())
+
                 } else if (!status) {
                     buyAndSellViewModel.successLiveData.value = null
                     val text = """your transaction did not go through
