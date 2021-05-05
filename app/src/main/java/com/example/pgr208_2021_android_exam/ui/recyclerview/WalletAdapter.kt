@@ -36,6 +36,8 @@ class WalletAdapter(private val list: List<OwnedWallet>) : RecyclerView.Adapter<
         // TODO: Make resource-strings with placeholders...
         fun bind(wallet: OwnedWallet) {
 
+            println(wallet)
+
             // TODO: Discuss what we want to do when a user sell all their owned crypto of a type (e.g: end up with 0.0 of DOGECOIN etc.)
             // Hide the given OwnedWallet if it's totalInUSD is less than 1
             this.itemView.visibility = if (wallet.totalInUSD >= 1) View.VISIBLE else View.GONE

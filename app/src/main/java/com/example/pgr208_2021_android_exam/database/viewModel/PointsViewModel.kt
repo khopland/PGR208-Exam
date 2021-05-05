@@ -59,23 +59,6 @@ class PointsViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     // Used for refreshing user-points on screen(s)
-    fun refresh() {
-        viewModelScope.launch(Dispatchers.IO) {
-            var sum = 0.0
-            // need rates for ownedWallets...
-            val rates = fromCryptoCurrenciesToCoinRates(coinCapService.getAllCrypto().toDomainModel()).toMutableMap()
-            // Add missing USD-wallet...
-            rates["USD"] = coinCapService.getRateById("united-states-dollar").toDomainModel()
-
-            val ownedWalletsVM = OwnedWalletsViewModel(this@PointsViewModel.getApplication(), rates)
-
-            repository.getAllWallets()?.forEach { wallet ->
-                val ownedWallet = ownedWalletsVM.transformIntoOwnedWallet(wallet)
-                sum += ownedWallet.totalInUSD
-            }
-
-            _pointsLiveData.postValue(sum)
-        }
-    }
+    fun refresh() = getPoints()
 
 }
