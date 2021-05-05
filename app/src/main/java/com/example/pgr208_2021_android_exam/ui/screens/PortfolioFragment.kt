@@ -80,5 +80,6 @@ class PortfolioFragment : Fragment() {
         super.onResume()
 
         pointsViewModel.refresh()
+        currencyViewModel.getAllRates()
     }
 }
