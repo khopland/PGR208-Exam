@@ -20,18 +20,6 @@ class PointsViewModel(application: Application) : AndroidViewModel(application) 
     private val _pointsLiveData: MutableLiveData<Double?> = MutableLiveData()
     val pointsLiveData: LiveData<Double?> = _pointsLiveData
 
-    // Transforming current points into formatted "user points"
-    // example: 10000.0 => "Points: 10000.00 USD"
-    val userPoints: LiveData<String> = pointsLiveData.map { points ->
-
-        // initially points is: 10000.0
-        val res = "${points.toString()}00"
-        val valueWithDecimals = res.substring(0, res.indexOf('.') + 3)
-
-        // Return formatted text with prepared value
-        "Points: $valueWithDecimals USD"
-    }
-
     init {
         val transactionDao = DataBase.getDatabase(application).transactionDao()
         repository = TransactionRepository(transactionDao)
@@ -58,6 +46,18 @@ class PointsViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    // Transforming current points into formatted "user points"
+    // example: 10000.0 => "Points: 10000.00 USD"
+    val userPoints: LiveData<String> = pointsLiveData.map { points ->
+
+        // initially points is: 10000.0
+        val res = "${points.toString()}00"
+        val valueWithDecimals = res.substring(0, res.indexOf('.') + 3)
+
+        // Return formatted text with prepared value
+        "Points: $valueWithDecimals USD"
+    }
+
     // Used for refreshing user-points on screen(s)
     fun refresh() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -73,8 +73,6 @@ class PointsViewModel(application: Application) : AndroidViewModel(application) 
                 val ownedWallet = ownedWalletsVM.transformIntoOwnedWallet(wallet)
                 sum += ownedWallet.totalInUSD
             }
-
-            println("how refreshing!")
 
             _pointsLiveData.postValue(sum)
         }

@@ -16,7 +16,7 @@ import com.example.pgr208_2021_android_exam.databinding.FragmentOverviewBinding
 import com.example.pgr208_2021_android_exam.ui.recyclerview.CurrencyAdapter
 import com.example.pgr208_2021_android_exam.ui.viewmodels.OverViewModel
 
-class OverviewFragment : Fragment(R.layout.fragment_overview) {
+class OverviewFragment : Fragment() {
     private lateinit var binding: FragmentOverviewBinding
     private lateinit var viewModel: OverViewModel
     private lateinit var pointsViewModel: PointsViewModel
