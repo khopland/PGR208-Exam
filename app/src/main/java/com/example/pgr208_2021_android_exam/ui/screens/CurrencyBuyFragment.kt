@@ -69,6 +69,7 @@ class CurrencyBuyFragment : Fragment() {
 
         // Give needed details for a transaction to buyAndSellViewModel
         binding.btnBuy.setOnClickListener {
+            binding.btnBuy.isEnabled = false
             buyAndSellViewModel.buy(
                     isSelling = false,
                     dollar = binding.tvDollarValue.text.toString().toLong(),
@@ -85,12 +86,14 @@ class CurrencyBuyFragment : Fragment() {
                     val duration = Toast.LENGTH_SHORT
                     val toast = Toast.makeText(requireContext(), text, duration)
                     toast.show()
+                    binding.btnBuy.isEnabled = true
                 } else if (!status) {
                     buyAndSellViewModel.successLiveData.value = null
                     val text = "your transaction did not go through"
                     val duration = Toast.LENGTH_LONG
                     val toast = Toast.makeText(requireContext(), text, duration)
                     toast.show()
+                    binding.btnBuy.isEnabled = true
                 }
             }
         })

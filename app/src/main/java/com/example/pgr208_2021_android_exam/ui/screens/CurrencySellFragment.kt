@@ -84,6 +84,7 @@ class CurrencySellFragment : Fragment() {
         binding.tvCryptoValue.addTextChangedListener(textWatcher)
 
         binding.btnSell.setOnClickListener {
+            binding.btnSell.isEnabled = false
             buyAndSellViewModel.sell(
                 isSelling = true,
                 dollar = round(binding.tvDollarValue.text.toString().toDouble()).toLong(),
@@ -95,11 +96,13 @@ class CurrencySellFragment : Fragment() {
         buyAndSellViewModel.successLiveData.observe(viewLifecycleOwner, { status ->
             status?.let {
                 if (status) {
+
                     buyAndSellViewModel.successLiveData.value = null
                     val text = "you sold ${binding.tvCurrencyName.text}"
                     val duration = Toast.LENGTH_SHORT
                     val toast = Toast.makeText(requireContext(), text, duration)
                     toast.show()
+                    binding.btnSell.isEnabled = true
                     mWalletViewModel.getWallet(cryptoType = binding.tvCryptoCurrencySymbol.text.toString())
                 } else if (!status) {
                     buyAndSellViewModel.successLiveData.value = null
@@ -108,6 +111,7 @@ class CurrencySellFragment : Fragment() {
                     val duration = Toast.LENGTH_LONG
                     val toast = Toast.makeText(requireContext(), text, duration)
                     toast.show()
+                    binding.btnSell.isEnabled = true
                 }
             }
         })
