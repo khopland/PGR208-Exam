@@ -55,7 +55,7 @@ class CurrencyBuyFragment : Fragment() {
                 getImg(
                     context = requireContext(),
                     cryptoType = cryptoCurrency.symbol,
-                    icon = binding.ivCurrencyIcon
+                    icon = ivCurrencyIcon
                 )
                 // Currency info header
                 tvCurrencyName.text = cryptoCurrency.name
@@ -64,8 +64,6 @@ class CurrencyBuyFragment : Fragment() {
                 tvCurrencyRate.text = currencyRate
                 // Currency buy parts
                 tvCryptoCurrencySymbol.text = cryptoCurrency.symbol
-
-
             }
         })
 
@@ -110,9 +108,9 @@ class CurrencyBuyFragment : Fragment() {
                     // Navigating back to CurrencyFragment after successful buy
                     viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, {
                         findNavController().navigate(
-                            CurrencyBuyFragmentDirections.actionCurrencyBuyFragmentToCurrencyFragment(
-                                it
-                            )
+                                CurrencyBuyFragmentDirections.actionCurrencyBuyFragmentToCurrencyFragment(
+                                        it
+                                )
                         )
                     })
 

@@ -65,7 +65,6 @@ class OverviewFragment : Fragment() {
             currencyRecycleView.layoutManager = GridLayoutManager(requireContext(), 1)
         })
 
-        // TODO: Move this somewhere else later, or find a better solution for handling the possible fetch-error
         viewModel.error.observe(viewLifecycleOwner, { ex ->
             showError(requireContext(), ex)
         })
@@ -83,7 +82,6 @@ class OverviewFragment : Fragment() {
     }
 }
 
-// TODO: Maybe move this into some kind of shared file later?
 private fun showError(context: Context, error: Exception) {
     Toast.makeText(context, error.message.toString(), Toast.LENGTH_SHORT).show()
 }

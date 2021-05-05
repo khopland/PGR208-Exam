@@ -29,7 +29,6 @@ class OverViewModel(application: Application) : AndroidViewModel(application) {
         fetchAllCryptoCurrency()
     }
 
-    // TODO: Prepare fetching list of cryptoCurrencies
     fun fetchAllCryptoCurrency() {
         viewModelScope.launch(Dispatchers.IO) {
 
@@ -40,7 +39,6 @@ class OverViewModel(application: Application) : AndroidViewModel(application) {
                 _cryptoCurrencies.postValue(currencies)
             } catch (error: Exception) {
                 _error.postValue(error)
-                //Log.d("fetchAll", coinCapService.getAllCrypto().toString() )
             }
         }
     }

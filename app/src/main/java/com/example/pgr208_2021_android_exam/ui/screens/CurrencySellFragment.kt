@@ -69,7 +69,7 @@ class CurrencySellFragment : Fragment() {
                 getImg(
                     context = requireContext(),
                     cryptoType = cryptoCurrency.symbol,
-                    icon = binding.ivCurrencyIcon
+                    icon = ivCurrencyIcon
                 )
                 // Currency info header
                 tvCurrencyName.text = cryptoCurrency.name

@@ -10,7 +10,8 @@ import kotlinx.parcelize.Parcelize
 /* NB: Contains cryptoCurrency and regular currency (fiat-currency)
 
     {
-      "data": {
+      "data":
+      {
         "id": "bitcoin",
         "symbol": "BTC",
         "currencySymbol": "₿",
@@ -19,27 +20,18 @@ import kotlinx.parcelize.Parcelize
       },
       "timestamp": 1536347871542
     }
-
-*/
-//@JsonClass(generateAdapter = true)
-//data class CurrencyRatesListData(
-//        @Json(name = "data")
-//        val rates: List<CurrencyRate>
-//)
-
-/* NB: Contains cryptoCurrency and regular currency (fiat-currency)
 
     {
-      "data": {
-        "id": "bitcoin",
-        "symbol": "BTC",
-        "currencySymbol": "₿",
-        "type": "crypto",
-        "rateUsd": "6444.3132749056076909"
-      },
-      "timestamp": 1536347871542
-    }
+      "data" :
+      {
+        "id": "united-states-dollar",
+        "symbol": "USD",
+        "currencySymbol": "$",
+        "type": "fiat",
+        "rateUsd": "1.0000000000000000"
 
+      }
+    }
 */
 
 @JsonClass(generateAdapter = true)
@@ -48,7 +40,7 @@ data class CurrencyRateData(
     val rate: CurrencyRate
 )
 
-/*
+/* Example
     {
         "id": "bitcoin",
         "symbol": "BTC",
@@ -57,7 +49,6 @@ data class CurrencyRateData(
         "rateUsd": "6444.3132749056076909"
       },
  */
-
 @JsonClass(generateAdapter = true)
 data class CurrencyRate(
     val id: String,
@@ -67,11 +58,11 @@ data class CurrencyRate(
     val rateUsd: String,
 )
 
+// Transform the cryptoRates into objects in our domain-model
 fun CurrencyRateData.toDomainModel(): CoinRate {
 
     val (rate) = this
 
-    // Transform the cryptoRates into objects in our domain-model
     return CoinRate(
         name = rate.id,
         symbol = rate.symbol,
@@ -80,36 +71,7 @@ fun CurrencyRateData.toDomainModel(): CoinRate {
     )
 }
 
-// Conversion from list of all rates (cryptoCurrency and regular currency) -
-// to a list of only cryptoCurrency-rates ( and USD :] ) in our domain-model
-//fun CurrencyRatesListData.toDomainModel(): List<CoinRate> {
-//
-//    val (rates) = this
-//
-//    // Rate for a USD as a currency
-//    val dollarRate = rates.find { it.symbol == "USD" }
-//
-//    val cryptoRates: MutableList<CurrencyRate> = mutableListOf()
-//
-//    // Chose to use if-check here as the "?.let"-variant wasn't as readable...
-//    if (dollarRate != null) {
-//        cryptoRates.add(dollarRate)
-//    }
-//
-//    // Add in all the crypto-rates to the list
-//    cryptoRates.addAll(rates.filter { it.type == "crypto" })
-//
-//    // Transform the cryptoRates into objects in our domain-model
-//    return cryptoRates.map { rate ->
-//        CoinRate(
-//                name = rate.id,
-//                symbol = rate.symbol,
-//                type = rate.type,
-//                rateUSD = rate.rateUsd.toDouble()
-//        )
-//    }
-//}
-
+// For use with "getAllRates" to transform list of currencies into "map of rates for cryptoCurrencies"
 fun fromCryptoCurrenciesToCoinRates(currencies: List<CryptoCurrency>): Map<String, CoinRate> {
     val rates = mutableMapOf<String, CoinRate>()
 

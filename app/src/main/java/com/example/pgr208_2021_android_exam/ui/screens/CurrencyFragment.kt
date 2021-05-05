@@ -58,7 +58,7 @@ class CurrencyFragment : Fragment() {
 
         mWalletViewModel.walletLiveData.observe(viewLifecycleOwner, {wallet ->
             viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner,{
-                renderAmount(it,wallet)
+                renderAmount(it, wallet)
             })
         })
 

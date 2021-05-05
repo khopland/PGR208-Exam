@@ -34,7 +34,6 @@ class WalletAdapter(private val list: List<OwnedWallet>) :
     ) : RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
-        // TODO: Make resource-strings with placeholders...
         fun bind(wallet: OwnedWallet) {
             binding.apply {
                 getImg(context = context, cryptoType = wallet.cryptoType, ivCurrencyIcon)

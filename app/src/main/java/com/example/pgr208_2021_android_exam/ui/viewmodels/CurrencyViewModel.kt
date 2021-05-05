@@ -41,11 +41,6 @@ class CurrencyViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun setSelectedCurrency(currency: CryptoCurrency) {
-        //_selectedCryptoCurrency.postValue(currency)
-        fetchCryptoCurrencyById(currency.type)
-    }
-
     // Map of rates etc.
     private val _currencyRates = MutableLiveData<Map<String, CoinRate>>()
     val currencyRates: LiveData<Map<String, CoinRate>>
