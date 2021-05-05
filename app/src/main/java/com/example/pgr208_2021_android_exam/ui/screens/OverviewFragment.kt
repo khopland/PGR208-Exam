@@ -74,6 +74,7 @@ class OverviewFragment : Fragment() {
         super.onResume()
 
         pointsViewModel.refresh()
+        viewModel.fetchAllCryptoCurrency()
     }
 }
 
