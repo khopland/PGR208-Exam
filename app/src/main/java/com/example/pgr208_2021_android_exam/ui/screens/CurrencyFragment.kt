@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.pgr208_2021_android_exam.data.domain.CryptoCurrency
 import com.example.pgr208_2021_android_exam.data.getImg
 import com.example.pgr208_2021_android_exam.data.rounding
 import com.example.pgr208_2021_android_exam.database.viewModel.WalletViewModel
 import com.example.pgr208_2021_android_exam.databinding.FragmentCurrencyBinding
 import com.example.pgr208_2021_android_exam.ui.viewmodels.CurrencyViewModel
+import java.util.*
 
 class CurrencyFragment : Fragment() {
     private lateinit var binding: FragmentCurrencyBinding
@@ -47,7 +49,12 @@ class CurrencyFragment : Fragment() {
 
         val cryptoCurrency = args.cryptoCurrency
 
-        viewModel.setSelectedCurrency(currency = cryptoCurrency)
+        viewModel.fetchCryptoCurrencyById(id = cryptoCurrency.name)
+
+        viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, { selectedCurrency ->
+            renderCurrencyHeaderInfo(selectedCurrency)
+        })
+
 
         mWalletViewModel.getWallet(cryptoType = cryptoCurrency.symbol)
 
@@ -58,6 +65,7 @@ class CurrencyFragment : Fragment() {
             } else {
                 binding.btnSell.isEnabled = true
 
+                // "Wallet of the selected cryptoCurrency"-part
                 val roundedAmount = rounding(wallet.amount)
                 val roundedPrice = rounding(cryptoCurrency.priceInUSD)
 
@@ -71,14 +79,6 @@ class CurrencyFragment : Fragment() {
         mWalletViewModel.dollar.observe(viewLifecycleOwner, {
             binding.btnBuy.isEnabled = (it != 0)
         })
-
-        // Update info in "selected currency info header"...
-        binding.apply {
-            getImg(requireContext(), cryptoType = cryptoCurrency.symbol, icon = ivCurrencyIcon)
-            tvCurrencyName.text = cryptoCurrency.name
-            tvCurrencySymbol.text = cryptoCurrency.symbol
-            tvCurrencyRate.text = "$${rounding(cryptoCurrency.priceInUSD)}"
-        }
 
         binding.btnBuy.setOnClickListener {
             findNavController().navigate(
@@ -95,5 +95,28 @@ class CurrencyFragment : Fragment() {
                 )
             )
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun renderCurrencyHeaderInfo(cryptoCurrency: CryptoCurrency) {
+        binding.apply {
+            getImg(requireContext(), cryptoType = cryptoCurrency.symbol, icon = ivCurrencyIcon)
+            tvCurrencyName.text = cryptoCurrency.name
+            tvCurrencySymbol.text = cryptoCurrency.symbol
+            tvCurrencyRate.text = "$${rounding(cryptoCurrency.priceInUSD)}"
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Refresh "selected currency header info"
+        val cryptoCurrency = CurrencyFragmentArgs.fromBundle(requireArguments()).cryptoCurrency
+
+        viewModel.fetchCryptoCurrencyById(cryptoCurrency.type)
+
+        viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, { currency ->
+            renderCurrencyHeaderInfo(currency)
+        })
     }
 }
