@@ -97,7 +97,7 @@ class CurrencySellFragment : Fragment() {
                 if (status) {
                     buyAndSellViewModel.successLiveData.value = null
                     val text = "you sold ${binding.tvCurrencyName.text}"
-                    val duration = Toast.LENGTH_LONG
+                    val duration = Toast.LENGTH_SHORT
                     val toast = Toast.makeText(requireContext(), text, duration)
                     toast.show()
                     mWalletViewModel.getWallet(cryptoType = binding.tvCryptoCurrencySymbol.text.toString())
