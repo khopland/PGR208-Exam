@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -109,7 +110,11 @@ class CurrencySellFragment : Fragment() {
 
                     // Navigating back to CurrencyFragment after successful sell
                     viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, {
-                        findNavController().navigate(CurrencySellFragmentDirections.actionCurrencySellFragmentToCurrencyFragment(it))
+                        findNavController().navigate(
+                            CurrencySellFragmentDirections.actionCurrencySellFragmentToCurrencyFragment(
+                                it
+                            )
+                        )
                     })
 
                     binding.btnSell.isEnabled = true
@@ -152,10 +157,10 @@ class CurrencySellFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getRateBySymbol(binding.tvCurrencySymbol.text.toString())
-        viewModel.currencyRate.observe(viewLifecycleOwner, {
-            if (it != null)
-                binding.tvCurrencyRate.text = it.rateUSD.toString()
+        viewModel.getAllRates()
+        viewModel.currencyRates.observe(viewLifecycleOwner, {
+            binding.tvCurrencyRate.text =
+                it[binding.tvCryptoCurrencySymbol.text.toString()]?.rateUSD.toString()
         })
     }
 }

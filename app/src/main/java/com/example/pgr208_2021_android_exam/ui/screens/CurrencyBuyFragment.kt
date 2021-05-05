@@ -3,6 +3,7 @@ package com.example.pgr208_2021_android_exam.ui.screens
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -130,11 +131,10 @@ class CurrencyBuyFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getRateBySymbol(binding.tvCurrencySymbol.text.toString())
-        viewModel.currencyRate.observe(viewLifecycleOwner, {
-            if (it != null)
-                binding.tvCurrencyRate.text = it.rateUSD.toString()
-
+        viewModel.getAllRates()
+        viewModel.currencyRates.observe(viewLifecycleOwner, {
+            binding.tvCurrencyRate.text =
+                it[binding.tvCryptoCurrencySymbol.text.toString()]?.rateUSD.toString()
         })
     }
 }

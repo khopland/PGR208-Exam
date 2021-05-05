@@ -52,7 +52,7 @@ class CurrencyViewModel(application: Application): AndroidViewModel(application)
     val currencyRate: LiveData<CoinRate>
         get() = _currencyRate
 
-    private fun getAllRates() {
+     fun getAllRates() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 // This is to get all rates -
