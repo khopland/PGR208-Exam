@@ -60,8 +60,12 @@ class PortfolioFragment : Fragment() {
             ownedWalletsViewModel = OwnedWalletsViewModel(requireActivity().application, rates)
 
             ownedWalletsViewModel.ownedWallets.observe(viewLifecycleOwner, { ownedWallets ->
+                // This is to only display OwnedWallets with a total-value above 1 USD
+                // We need to filter this before giving it to the walletAdapter to avoid "empty spaces rendered in the recyclerView"
+                val wallets = ownedWallets.values.filter { wallet -> wallet.totalInUSD >= 1 }
+
                 binding.ownedCurrencies.apply {
-                    adapter = WalletAdapter(ownedWallets.values.toList())
+                    adapter = WalletAdapter(wallets)
                     layoutManager = GridLayoutManager(requireContext(), 1)
                 }
             })
