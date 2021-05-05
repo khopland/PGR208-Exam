@@ -122,9 +122,5 @@ class CurrencyFragment : Fragment() {
         val cryptoCurrency = CurrencyFragmentArgs.fromBundle(requireArguments()).cryptoCurrency
 
         viewModel.fetchCryptoCurrencyById(cryptoCurrency.type)
-
-        viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, { currency ->
-            renderCurrencyHeaderInfo(currency)
-        })
     }
 }
