@@ -2,15 +2,14 @@ package com.example.pgr208_2021_android_exam.ui.screens
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.pgr208_2021_android_exam.R
 import com.example.pgr208_2021_android_exam.database.viewModel.PointsViewModel
 import com.example.pgr208_2021_android_exam.databinding.FragmentOverviewBinding
 import com.example.pgr208_2021_android_exam.ui.recyclerview.CurrencyAdapter
@@ -26,9 +25,11 @@ class OverviewFragment : Fragment() {
         fun newInstance() = OverviewFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         // Inflate the layout for this fragment
         binding = FragmentOverviewBinding.inflate(inflater, container, false);
@@ -48,14 +49,18 @@ class OverviewFragment : Fragment() {
             binding.TWUserPoint.text = pointsText
         })
 
-        val currencyRecycleView =  binding.currencyList
+        val currencyRecycleView = binding.currencyList
 
         viewModel.cryptoCurrencies.observe(viewLifecycleOwner, { cryptoList ->
-            currencyRecycleView.adapter = CurrencyAdapter(cryptoList, CurrencyAdapter.OnClickListener {
-                clickedCurrency ->
+            currencyRecycleView.adapter =
+                CurrencyAdapter(cryptoList, CurrencyAdapter.OnClickListener { clickedCurrency ->
 
-                findNavController().navigate(OverviewFragmentDirections.actionOverviewFragmentToCurrencyFragment(clickedCurrency))
-            })
+                    findNavController().navigate(
+                        OverviewFragmentDirections.actionOverviewFragmentToCurrencyFragment(
+                            clickedCurrency
+                        )
+                    )
+                })
             // LinearLayoutManager(this, RecyclerView.VERTICAL, false)
             currencyRecycleView.layoutManager = GridLayoutManager(requireContext(), 1)
         })

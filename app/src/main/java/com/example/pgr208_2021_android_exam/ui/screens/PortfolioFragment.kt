@@ -1,17 +1,15 @@
 package com.example.pgr208_2021_android_exam.ui.screens
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.pgr208_2021_android_exam.R
-import com.example.pgr208_2021_android_exam.databinding.FragmentPortfolioBinding
 import com.example.pgr208_2021_android_exam.database.viewModel.PointsViewModel
+import com.example.pgr208_2021_android_exam.databinding.FragmentPortfolioBinding
 import com.example.pgr208_2021_android_exam.ui.recyclerview.WalletAdapter
 import com.example.pgr208_2021_android_exam.ui.viewmodels.CurrencyViewModel
 import com.example.pgr208_2021_android_exam.ui.viewmodels.OwnedWalletsViewModel
@@ -73,7 +71,8 @@ class PortfolioFragment : Fragment() {
 
         // Navigate to transactions-screen when clicking the "Transactions"-button
         binding.btnTransactions.setOnClickListener {
-            it.findNavController().navigate(PortfolioFragmentDirections.actionPortfolioFragmentToTransactionsFragment())
+            it.findNavController()
+                .navigate(PortfolioFragmentDirections.actionPortfolioFragmentToTransactionsFragment())
         }
     }
 

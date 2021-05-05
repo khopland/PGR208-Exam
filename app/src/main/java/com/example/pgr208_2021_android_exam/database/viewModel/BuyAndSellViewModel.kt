@@ -45,13 +45,13 @@ class BuyAndSellViewModel(application: Application) : AndroidViewModel(applicati
 
         // Create a transaction and call addTransaction (store result in isSuccess)
         val transaction = Transaction(
-                id = 0,
-                message = "BOUGHT",
-                selling = isSelling,
-                dollar = dollar,
-                conversionRate = rounding(conversionRate),
-                cryptoType = cryptoType,
-                timeDate = LocalDateTime.now().toString()
+            id = 0,
+            message = "BOUGHT",
+            selling = isSelling,
+            dollar = dollar,
+            conversionRate = rounding(conversionRate),
+            cryptoType = cryptoType,
+            timeDate = LocalDateTime.now().toString()
         )
 
         addTransaction(transaction)
@@ -61,13 +61,13 @@ class BuyAndSellViewModel(application: Application) : AndroidViewModel(applicati
 
         // Create a transaction and call addTransaction (store result in isSuccess)
         val transaction = Transaction(
-                id = 0,
-                message = "SOLD",
-                selling = isSelling,
-                dollar = dollar,
-                conversionRate = rounding(conversionRate),
-                cryptoType = cryptoType,
-                timeDate = LocalDateTime.now().toString()
+            id = 0,
+            message = "SOLD",
+            selling = isSelling,
+            dollar = dollar,
+            conversionRate = rounding(conversionRate),
+            cryptoType = cryptoType,
+            timeDate = LocalDateTime.now().toString()
         )
 
         addTransaction(transaction)

@@ -44,8 +44,8 @@ import kotlinx.parcelize.Parcelize
 
 @JsonClass(generateAdapter = true)
 data class CurrencyRateData(
-        @Json(name = "data")
-        val rate: CurrencyRate
+    @Json(name = "data")
+    val rate: CurrencyRate
 )
 
 /*
@@ -60,11 +60,11 @@ data class CurrencyRateData(
 
 @JsonClass(generateAdapter = true)
 data class CurrencyRate(
-        val id: String,
-        val symbol: String,
-        val currencySymbol: String?,
-        val type: String,
-        val rateUsd: String,
+    val id: String,
+    val symbol: String,
+    val currencySymbol: String?,
+    val type: String,
+    val rateUsd: String,
 )
 
 fun CurrencyRateData.toDomainModel(): CoinRate {
@@ -73,10 +73,10 @@ fun CurrencyRateData.toDomainModel(): CoinRate {
 
     // Transform the cryptoRates into objects in our domain-model
     return CoinRate(
-            name = rate.id,
-            symbol = rate.symbol,
-            type = rate.type,
-            rateUSD = rate.rateUsd.toDouble()
+        name = rate.id,
+        symbol = rate.symbol,
+        type = rate.type,
+        rateUSD = rate.rateUsd.toDouble()
     )
 }
 
@@ -122,12 +122,14 @@ fun fromCryptoCurrenciesToCoinRates(currencies: List<CryptoCurrency>): Map<Strin
             priceInUSD => rateUSD
      */
     // Found info about the practical use of this, from the following link: https://www.baeldung.com/kotlin/list-to-map#3-the-associatebyto-method
-    currencies.associateByTo(rates, { it.symbol }, { CoinRate(
+    currencies.associateByTo(rates, { it.symbol }, {
+        CoinRate(
             name = it.type,
             symbol = it.symbol,
             type = "crypto",
             rateUSD = it.priceInUSD
-        )}
+        )
+    }
     )
 
     return rates
@@ -158,8 +160,8 @@ fun fromCryptoCurrenciesToCoinRates(currencies: List<CryptoCurrency>): Map<Strin
  */
 @Parcelize
 data class CoinRate(
-        val name: String,
-        val symbol: String,
-        val type: String,
-        val rateUSD: Double,
+    val name: String,
+    val symbol: String,
+    val type: String,
+    val rateUSD: Double,
 ) : Parcelable

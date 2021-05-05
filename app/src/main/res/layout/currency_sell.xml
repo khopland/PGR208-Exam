@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -57,6 +56,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_currency_symbol"
         android:layout_marginTop="24dp"
         tools:text="$54,044.64" />
+
     <TextView
         android:id="@+id/tv_you_have"
         android:layout_width="wrap_content"
@@ -109,7 +109,7 @@
             android:inputType="numberDecimal"
             android:hint="0.05"
             android:textSize="20sp"
-            tools:hint="0.05"/>
+            tools:hint="0.05" />
 
         <TextView
             android:id="@+id/tv_dollar_symbol"
@@ -121,8 +121,7 @@
             android:textColor="@color/white"
             tools:text="Symbol: USD"
             android:layout_alignStart="@id/tv_crypto_currency_symbol"
-            android:layout_below="@id/tv_crypto_currency_symbol"
-            />
+            android:layout_below="@id/tv_crypto_currency_symbol" />
 
         <TextView
             android:id="@+id/tv_dollar_value"

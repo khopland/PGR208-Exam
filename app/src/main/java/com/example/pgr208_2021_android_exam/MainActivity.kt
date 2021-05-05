@@ -1,17 +1,13 @@
 package com.example.pgr208_2021_android_exam
 
 import android.content.Context
-import android.content.Intent
-import android.os.*
+import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.pgr208_2021_android_exam.database.viewModel.StartViewModel
-import com.example.pgr208_2021_android_exam.databinding.ActivityMainBinding
-import com.example.pgr208_2021_android_exam.ui.screens.OverviewActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var startViewModel: StartViewModel

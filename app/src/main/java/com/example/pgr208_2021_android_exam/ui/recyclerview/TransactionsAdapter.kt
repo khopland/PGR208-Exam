@@ -9,11 +9,13 @@ import com.example.pgr208_2021_android_exam.data.getImg
 import com.example.pgr208_2021_android_exam.database.viewModel.UserTransaction
 import com.example.pgr208_2021_android_exam.databinding.TransactionItemBinding
 
-class TransactionsAdapter(private val list: List<UserTransaction>) : RecyclerView.Adapter<TransactionsAdapter.TransactionsViewHolder>() {
+class TransactionsAdapter(private val list: List<UserTransaction>) :
+    RecyclerView.Adapter<TransactionsAdapter.TransactionsViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionsViewHolder {
-        val binding = TransactionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            TransactionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TransactionsViewHolder(parent.context, binding)
     }
 
@@ -29,16 +31,18 @@ class TransactionsAdapter(private val list: List<UserTransaction>) : RecyclerVie
     override fun getItemCount(): Int = list.size
 
 
-
-    class TransactionsViewHolder(private val context: Context,
-                                 private val binding: TransactionItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class TransactionsViewHolder(
+        private val context: Context,
+        private val binding: TransactionItemBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(transaction: UserTransaction) {
             binding.apply {
                 getImg(context, transaction.cryptoType, ivCurrencyIcon)
 
                 val bought = transaction.message.startsWith("bought", ignoreCase = true)
-                val installationReward = transaction.message.startsWith("installation", ignoreCase = true)
+                val installationReward =
+                    transaction.message.startsWith("installation", ignoreCase = true)
 
                 if (bought || installationReward) tvMessage.setTextColor(Color.GREEN)
                 else tvMessage.setTextColor(Color.MAGENTA)

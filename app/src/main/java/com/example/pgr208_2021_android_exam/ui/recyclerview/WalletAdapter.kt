@@ -3,17 +3,18 @@ package com.example.pgr208_2021_android_exam.ui.recyclerview
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pgr208_2021_android_exam.data.getImg
 import com.example.pgr208_2021_android_exam.databinding.PortfolioCurrencyItemBinding
 import com.example.pgr208_2021_android_exam.ui.viewmodels.OwnedWallet
 
-class WalletAdapter(private val list: List<OwnedWallet>) : RecyclerView.Adapter<WalletAdapter.WalletViewHolder>() {
+class WalletAdapter(private val list: List<OwnedWallet>) :
+    RecyclerView.Adapter<WalletAdapter.WalletViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WalletViewHolder {
-        val binding = PortfolioCurrencyItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            PortfolioCurrencyItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return WalletViewHolder(parent.context, binding)
     }
 
@@ -28,8 +29,8 @@ class WalletAdapter(private val list: List<OwnedWallet>) : RecyclerView.Adapter<
     override fun getItemCount(): Int = list.size
 
     class WalletViewHolder(
-            private val context: Context,
-            private val binding: PortfolioCurrencyItemBinding
+        private val context: Context,
+        private val binding: PortfolioCurrencyItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")

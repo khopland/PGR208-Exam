@@ -18,7 +18,8 @@ class CurrencyAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
         // Create a binding of the inflated "overview_currency_item.xml"-file
-        val binding = OverviewCurrencyItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            OverviewCurrencyItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CurrencyViewHolder(parent.context, binding)
     }
 

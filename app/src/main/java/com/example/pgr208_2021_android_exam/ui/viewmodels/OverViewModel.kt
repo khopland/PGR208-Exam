@@ -1,7 +1,6 @@
 package com.example.pgr208_2021_android_exam.ui.viewmodels
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -31,7 +30,7 @@ class OverViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // TODO: Prepare fetching list of cryptoCurrencies
-     fun fetchAllCryptoCurrency() {
+    fun fetchAllCryptoCurrency() {
         viewModelScope.launch(Dispatchers.IO) {
 
             try {

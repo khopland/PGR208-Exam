@@ -2,14 +2,17 @@ package com.example.pgr208_2021_android_exam.ui.viewmodels
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.pgr208_2021_android_exam.data.CoinCapService
 import com.example.pgr208_2021_android_exam.data.domain.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class CurrencyViewModel(application: Application): AndroidViewModel(application) {
+class CurrencyViewModel(application: Application) : AndroidViewModel(application) {
 
     private val coinCapService: CoinCapService = CoinCapApi.coinCapService
 
@@ -52,7 +55,7 @@ class CurrencyViewModel(application: Application): AndroidViewModel(application)
     val currencyRate: LiveData<CoinRate>
         get() = _currencyRate
 
-     fun getAllRates() {
+    fun getAllRates() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 // This is to get all rates -
@@ -68,7 +71,8 @@ class CurrencyViewModel(application: Application): AndroidViewModel(application)
                     coinCapService.getRateById("united-states-dollar").toDomainModel()
                 }
 
-                val rates: MutableMap<String, CoinRate> = mutableMapOf(dollarRate.symbol to dollarRate)
+                val rates: MutableMap<String, CoinRate> =
+                    mutableMapOf(dollarRate.symbol to dollarRate)
 
                 rates.putAll(fromCryptoCurrenciesToCoinRates(currencies))
 
@@ -85,7 +89,11 @@ class CurrencyViewModel(application: Application): AndroidViewModel(application)
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val coinRate = withContext(Dispatchers.IO) { coinCapService.getRateById(rate?.name ?: "no_id") }
+                val coinRate = withContext(Dispatchers.IO) {
+                    coinCapService.getRateById(
+                        rate?.name ?: "no_id"
+                    )
+                }
                 _currencyRate.postValue(coinRate.toDomainModel())
             } catch (err: java.lang.Exception) {
                 Log.e(this::class.java.simpleName, err.toString())

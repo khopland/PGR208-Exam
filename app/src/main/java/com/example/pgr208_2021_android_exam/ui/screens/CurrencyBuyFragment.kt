@@ -3,7 +3,6 @@ package com.example.pgr208_2021_android_exam.ui.screens
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,7 +51,11 @@ class CurrencyBuyFragment : Fragment() {
         // Fill in the "selected currency info header" with values...
         viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, { cryptoCurrency ->
             binding.apply {
-                getImg(context = requireContext(), cryptoType = cryptoCurrency.symbol, icon = binding.ivCurrencyIcon)
+                getImg(
+                    context = requireContext(),
+                    cryptoType = cryptoCurrency.symbol,
+                    icon = binding.ivCurrencyIcon
+                )
                 // Currency info header
                 tvCurrencyName.text = cryptoCurrency.name
                 tvCurrencySymbol.text = cryptoCurrency.symbol
@@ -73,10 +76,10 @@ class CurrencyBuyFragment : Fragment() {
         binding.btnBuy.setOnClickListener {
             binding.btnBuy.isEnabled = false
             buyAndSellViewModel.buy(
-                    isSelling = false,
-                    dollar = binding.tvDollarValue.text.toString().toLong(),
-                    conversionRate = binding.tvCurrencyRate.text.toString().substring(1).toDouble(),
-                    cryptoType = binding.tvCryptoCurrencySymbol.text.toString()
+                isSelling = false,
+                dollar = binding.tvDollarValue.text.toString().toLong(),
+                conversionRate = binding.tvCurrencyRate.text.toString().substring(1).toDouble(),
+                cryptoType = binding.tvCryptoCurrencySymbol.text.toString()
             )
         }
 
@@ -92,7 +95,11 @@ class CurrencyBuyFragment : Fragment() {
 
                     // Navigating back to CurrencyFragment after successful buy
                     viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, {
-                        findNavController().navigate(CurrencyBuyFragmentDirections.actionCurrencyBuyFragmentToCurrencyFragment(it))
+                        findNavController().navigate(
+                            CurrencyBuyFragmentDirections.actionCurrencyBuyFragmentToCurrencyFragment(
+                                it
+                            )
+                        )
                     })
 
                     binding.btnBuy.isEnabled = true
@@ -116,7 +123,8 @@ class CurrencyBuyFragment : Fragment() {
             val currencyRate = binding.tvCurrencyRate.text.toString().substring(1).toDouble()
 
             // Display "0" after the user removes all text in dollar-input field
-            val inputDollarValue = if (field.isBlank()) 0 else binding.tvDollarValue.text.toString().toInt()
+            val inputDollarValue =
+                if (field.isBlank()) 0 else binding.tvDollarValue.text.toString().toInt()
 
             // rounding to display value with 1-2 decimals
             binding.tvCalculatedCryptoValue.text = "${rounding(inputDollarValue / currencyRate)}"

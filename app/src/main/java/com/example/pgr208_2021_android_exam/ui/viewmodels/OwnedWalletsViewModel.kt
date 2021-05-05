@@ -9,8 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.pgr208_2021_android_exam.data.CoinCapService
 import com.example.pgr208_2021_android_exam.data.domain.CoinCapApi
 import com.example.pgr208_2021_android_exam.data.domain.CoinRate
-import com.example.pgr208_2021_android_exam.data.domain.fromCryptoCurrenciesToCoinRates
-import com.example.pgr208_2021_android_exam.data.domain.toDomainModel
 import com.example.pgr208_2021_android_exam.data.rounding
 import com.example.pgr208_2021_android_exam.database.db.DataBase
 import com.example.pgr208_2021_android_exam.database.db.TransactionRepository
@@ -18,9 +16,9 @@ import com.example.pgr208_2021_android_exam.database.entities.Wallet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 
-class OwnedWalletsViewModel(application: Application, private val rates: Map<String, CoinRate>) : AndroidViewModel(application) {
+class OwnedWalletsViewModel(application: Application, private val rates: Map<String, CoinRate>) :
+    AndroidViewModel(application) {
     private val repository: TransactionRepository
     private val coinCapService: CoinCapService
 
@@ -52,7 +50,10 @@ class OwnedWalletsViewModel(application: Application, private val rates: Map<Str
                 // Transforming list of wallets into map, with cyrptoType as key, and wallet as value
                 // example: { key: DOGE, value: { cryptoType: DOGE, amount: 2.56 } }
                 val ownedWallets = wallets?.let { owned ->
-                    owned.associateByTo(walletsMap, { it.cryptoType }, { transformIntoOwnedWallet(it) })
+                    owned.associateByTo(
+                        walletsMap,
+                        { it.cryptoType },
+                        { transformIntoOwnedWallet(it) })
                 }
 
                 // Store empty map if we have no wallets/no wallets received from repository
@@ -72,10 +73,10 @@ class OwnedWalletsViewModel(application: Application, private val rates: Map<Str
         val totalInUSD = rounding(amount * rate)
 
         return OwnedWallet(
-                cryptoType = wallet.cryptoType,
-                amount = amount,
-                currencyRate = rate,
-                totalInUSD = totalInUSD
+            cryptoType = wallet.cryptoType,
+            amount = amount,
+            currencyRate = rate,
+            totalInUSD = totalInUSD
         )
     }
 
@@ -83,8 +84,8 @@ class OwnedWalletsViewModel(application: Application, private val rates: Map<Str
 
 // Data class for presentation of ownedWallets
 data class OwnedWallet(
-        val cryptoType: String,
-        val amount: Double,
-        val currencyRate: Double,
-        val totalInUSD: Double
+    val cryptoType: String,
+    val amount: Double,
+    val currencyRate: Double,
+    val totalInUSD: Double
 )

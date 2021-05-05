@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.pgr208_2021_android_exam.R
 import com.example.pgr208_2021_android_exam.database.viewModel.TransactionsViewModel
 import com.example.pgr208_2021_android_exam.databinding.FragmentTransactionsBinding
 import com.example.pgr208_2021_android_exam.ui.recyclerview.TransactionsAdapter

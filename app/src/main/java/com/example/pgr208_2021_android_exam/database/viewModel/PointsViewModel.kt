@@ -5,11 +5,9 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.pgr208_2021_android_exam.data.CoinCapService
 import com.example.pgr208_2021_android_exam.data.domain.CoinCapApi
-import com.example.pgr208_2021_android_exam.data.domain.fromCryptoCurrenciesToCoinRates
 import com.example.pgr208_2021_android_exam.data.domain.toDomainModel
 import com.example.pgr208_2021_android_exam.database.db.DataBase
 import com.example.pgr208_2021_android_exam.database.db.TransactionRepository
-import com.example.pgr208_2021_android_exam.ui.viewmodels.OwnedWalletsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

@@ -17,7 +17,7 @@ data class CryptoListData(
 // Conversion from CryptoListData to a list in our domain model
 fun CryptoListData.toDomainModel(): List<CryptoCurrency> {
 
-    val (cryptoCurrencies) = this
+        val (cryptoCurrencies) = this
 
     return cryptoCurrencies.map { crypto ->
         CryptoCurrency(
@@ -78,7 +78,7 @@ data class Crypto(
 fun CryptoData.toDomainModel(): CryptoCurrency {
 
     // Destructuring out the crypto-property from the "CryptoData"-data class
-    val ( crypto ) = this
+        val (crypto) = this
 
     return CryptoCurrency(
             type = crypto.id,

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Points: 10000.00 USD"/>
+        tools:text="Points: 10000.00 USD" />
 
     <TextView
         android:id="@+id/tv_calculation_description"
@@ -32,8 +31,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_user_points"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tv_title"
-         />
+        app:layout_constraintBottom_toTopOf="@id/tv_title" />
 
     <TextView
         android:id="@+id/tv_title"
@@ -56,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_title"
         app:layout_constraintBottom_toTopOf="@id/btn_transactions"
         tools:listitem="@layout/portfolio_currency_item"
-        tools:itemCount="5"/>
+        tools:itemCount="5" />
 
     <Button
         android:id="@+id/btn_transactions"

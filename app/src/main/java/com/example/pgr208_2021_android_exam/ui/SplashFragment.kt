@@ -15,10 +15,14 @@ import com.example.pgr208_2021_android_exam.ui.screens.OverviewActivity
  * Fragment that will be the "splash-screen" that MainActivity loads
  * Had to do this to make navigation work as expected...
  */
-class SplashFragment: Fragment() {
+class SplashFragment : Fragment() {
     private lateinit var binding: FragmentSplashBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         binding = FragmentSplashBinding.inflate(layoutInflater)
 

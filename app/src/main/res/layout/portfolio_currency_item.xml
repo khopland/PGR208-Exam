@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -34,7 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="Amount: x1"
         android:text="x1"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/tv_currency_rate"
@@ -49,7 +48,7 @@
         app:layout_constraintBaseline_toBaselineOf="@id/tv_currency_volume"
         android:text="1683.5"
         tools:text="Currency rate: 1683.5"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/tv_currency_total_value"
@@ -61,6 +60,6 @@
         app:layout_constraintEnd_toEndOf="@id/tv_currency_rate"
         android:text="1090364"
         tools:text="1090364 USD"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
