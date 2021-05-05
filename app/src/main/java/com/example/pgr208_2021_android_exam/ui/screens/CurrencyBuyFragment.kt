@@ -3,11 +3,11 @@ package com.example.pgr208_2021_android_exam.ui.screens
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.pgr208_2021_android_exam.data.getImg
@@ -126,5 +126,15 @@ class CurrencyBuyFragment : Fragment() {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getRateBySymbol(binding.tvCurrencySymbol.text.toString())
+        viewModel.currencyRate.observe(viewLifecycleOwner, {
+            if (it != null)
+                binding.tvCurrencyRate.text = it.rateUSD.toString()
+
+        })
     }
 }

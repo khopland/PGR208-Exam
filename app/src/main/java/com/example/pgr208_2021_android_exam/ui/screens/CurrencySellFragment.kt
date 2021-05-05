@@ -149,4 +149,13 @@ class CurrencySellFragment : Fragment() {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getRateBySymbol(binding.tvCurrencySymbol.text.toString())
+        viewModel.currencyRate.observe(viewLifecycleOwner, {
+            if (it != null)
+                binding.tvCurrencyRate.text = it.rateUSD.toString()
+        })
+    }
 }
