@@ -102,7 +102,8 @@ class CurrencySellFragment : Fragment() {
                     toast.show()
                 } else if (!status) {
                     buyAndSellViewModel.successLiveData.value = null
-                    val text = "your transaction did not go through"
+                    val text = """your transaction did not go through
+                        |you have "${mWalletViewModel.walletLiveData.value?.amount}"""".trimMargin()
                     val duration = Toast.LENGTH_LONG
                     val toast = Toast.makeText(requireContext(), text, duration)
                     toast.show()
