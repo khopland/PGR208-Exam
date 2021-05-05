@@ -100,6 +100,7 @@ class CurrencySellFragment : Fragment() {
                     val duration = Toast.LENGTH_LONG
                     val toast = Toast.makeText(requireContext(), text, duration)
                     toast.show()
+                    mWalletViewModel.getWallet(cryptoType = binding.tvCryptoCurrencySymbol.text.toString())
                 } else if (!status) {
                     buyAndSellViewModel.successLiveData.value = null
                     val text = """your transaction did not go through
