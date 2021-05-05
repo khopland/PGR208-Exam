@@ -14,7 +14,6 @@ import com.example.pgr208_2021_android_exam.data.rounding
 import com.example.pgr208_2021_android_exam.database.viewModel.WalletViewModel
 import com.example.pgr208_2021_android_exam.databinding.FragmentCurrencyBinding
 import com.example.pgr208_2021_android_exam.ui.viewmodels.CurrencyViewModel
-import java.util.*
 
 class CurrencyFragment : Fragment() {
     private lateinit var binding: FragmentCurrencyBinding
@@ -40,7 +39,6 @@ class CurrencyFragment : Fragment() {
         return binding.root
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -51,30 +49,15 @@ class CurrencyFragment : Fragment() {
 
         viewModel.fetchCryptoCurrencyById(id = cryptoCurrency.name)
 
-        viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, { selectedCurrency ->
-            renderCurrencyHeaderInfo(selectedCurrency)
-        })
-
-
         mWalletViewModel.getWallet(cryptoType = cryptoCurrency.symbol)
 
-        mWalletViewModel.walletLiveData.observe(viewLifecycleOwner, { wallet ->
-            if (wallet == null || wallet.amount == 0.0 || (wallet.amount * cryptoCurrency.priceInUSD) < 1) {
-                binding.btnSell.isEnabled = false
-                binding.currencyText.text = "you don't have this crypto"
-            } else {
-                binding.btnSell.isEnabled = true
-
-                // "Wallet of the selected cryptoCurrency"-part
-                val roundedAmount = rounding(wallet.amount)
-                val roundedPrice = rounding(cryptoCurrency.priceInUSD)
-
-                binding.currencyText.text =
-                    "you have $roundedAmount of ${wallet.cryptoType}\n " +
-                            "$roundedAmount x ${roundedPrice}\n " +
-                            "value ${(rounding(roundedAmount * roundedPrice))} USD"
-            }
+        viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, { selectedCurrency ->
+            renderCurrencyHeaderInfo(selectedCurrency)
+            mWalletViewModel.walletLiveData.observe(viewLifecycleOwner, {
+                renderAmount(selectedCurrency)
+            })
         })
+
 
         mWalletViewModel.dollar.observe(viewLifecycleOwner, {
             binding.btnBuy.isEnabled = (it != 0)
@@ -94,6 +77,28 @@ class CurrencyFragment : Fragment() {
                     cryptoCurrency.type
                 )
             )
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun renderAmount(selectedCurrency: CryptoCurrency) {
+        val wallet = mWalletViewModel.walletLiveData.value
+        if (wallet == null) {
+            binding.btnSell.isEnabled = false
+            binding.currencyText.text = "you don't have this crypto"
+        } else {
+            if (wallet.amount == 0.0 || wallet.amount.times(selectedCurrency.priceInUSD) < 1) {
+                binding.btnSell.isEnabled = false
+                binding.currencyText.text = "you don't have this crypto"
+            } else {
+                binding.btnSell.isEnabled = true
+                val roundedAmount = rounding(wallet.amount)
+                val roundedPrice = rounding(selectedCurrency.priceInUSD)
+                binding.currencyText.text =
+                    "you have $roundedAmount of ${wallet.cryptoType} \n " +
+                            "$roundedAmount x $$roundedPrice \n " +
+                            "value ${(rounding(roundedAmount * roundedPrice))} USD"
+            }
         }
     }
 
