@@ -64,7 +64,7 @@ class AllWalletsViewModel(application: Application, private val rates: Map<Strin
         }
     }
 
-    fun transformIntoOwnedWallet(wallet: Wallet): OwnedWallet {
+    private fun transformIntoOwnedWallet(wallet: Wallet): OwnedWallet {
         val currencyRate = rates.getValue(wallet.cryptoType)
 
         // Prepare values, round to 2 decimals

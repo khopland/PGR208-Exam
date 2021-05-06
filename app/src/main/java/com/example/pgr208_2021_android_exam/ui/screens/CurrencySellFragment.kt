@@ -53,17 +53,17 @@ class CurrencySellFragment : Fragment() {
         val args = CurrencySellFragmentArgs.fromBundle(requireArguments())
         viewModel.fetchCryptoCurrencyById(args.cryptoType)
 
-        viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, { cryptoCurrency ->
+        viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner) { cryptoCurrency ->
             //TODO: not optimal observe in a observe
             mWalletViewModel.getWallet(cryptoType = cryptoCurrency.symbol)
-            mWalletViewModel.walletLiveData.observe(viewLifecycleOwner, { wallet ->
+            mWalletViewModel.walletLiveData.observe(viewLifecycleOwner) { wallet ->
                 binding.apply {
                     if (wallet != null)
                         tvYouHave.text = "You have ${wallet.amount}"
                     else
                         tvYouHave.text = ""
                 }
-            })
+            }
 
             binding.apply {
                 getImg(
@@ -79,7 +79,7 @@ class CurrencySellFragment : Fragment() {
                 // Currency sell parts
                 tvCryptoCurrencySymbol.text = cryptoCurrency.symbol
             }
-        })
+        }
 
         // Prevent the user from buying before filling out a crypto-value
         binding.btnSell.isEnabled = false
@@ -107,7 +107,7 @@ class CurrencySellFragment : Fragment() {
             }
         }
 
-        buyAndSellViewModel.successLiveData.observe(viewLifecycleOwner, { status ->
+        buyAndSellViewModel.successLiveData.observe(viewLifecycleOwner) { status ->
             status?.let {
                 if (status) {
 
@@ -119,13 +119,13 @@ class CurrencySellFragment : Fragment() {
 
 
                     // Navigating back to CurrencyFragment after successful sell
-                    viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, {
+                    viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner) {
                         findNavController().navigate(
                             CurrencySellFragmentDirections.actionCurrencySellFragmentToCurrencyFragment(
                                 it
                             )
                         )
-                    })
+                    }
 
                     binding.btnSell.isEnabled = true
                     mWalletViewModel.getWallet(cryptoType = binding.tvCryptoCurrencySymbol.text.toString())
@@ -140,7 +140,7 @@ class CurrencySellFragment : Fragment() {
                     binding.btnSell.isEnabled = true
                 }
             }
-        })
+        }
     }
 
     private val textWatcher = object : TextWatcher {
@@ -168,10 +168,10 @@ class CurrencySellFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.getAllRates()
-        viewModel.currencyRates.observe(viewLifecycleOwner, {
+        viewModel.currencyRates.observe(viewLifecycleOwner) {
             val cr = it[binding.tvCryptoCurrencySymbol.text.toString()]?.rateUSD
             if (cr != null)
                 binding.tvCurrencyRate.text = "$${rounding(cr)}"
-        })
+        }
     }
 }

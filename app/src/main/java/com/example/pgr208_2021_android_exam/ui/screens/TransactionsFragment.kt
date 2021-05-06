@@ -35,12 +35,12 @@ class TransactionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        transactionsViewModel.userTransactions.observe(viewLifecycleOwner, { transactions ->
+        transactionsViewModel.userTransactions.observe(viewLifecycleOwner) { transactions ->
             // Preparing RecyclerView with list of content
             binding.transactions.apply {
                 adapter = TransactionsAdapter(transactions)
                 layoutManager = GridLayoutManager(requireContext(), 1)
             }
-        })
+        }
     }
 }

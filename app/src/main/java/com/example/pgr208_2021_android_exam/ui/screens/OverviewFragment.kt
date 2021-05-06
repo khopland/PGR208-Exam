@@ -45,13 +45,13 @@ class OverviewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Observe when the formatted userPoints-text is populated by the "pointsLiveData"
-        pointsViewModel.userPoints.observe(viewLifecycleOwner, { pointsText ->
+        pointsViewModel.userPoints.observe(viewLifecycleOwner) { pointsText ->
             binding.TWUserPoint.text = pointsText
-        })
+        }
 
         val currencyRecycleView = binding.currencyList
 
-        viewModel.cryptoCurrencies.observe(viewLifecycleOwner, { cryptoList ->
+        viewModel.cryptoCurrencies.observe(viewLifecycleOwner) { cryptoList ->
             currencyRecycleView.adapter =
                 CurrencyAdapter(cryptoList, CurrencyAdapter.OnClickListener { clickedCurrency ->
 
@@ -63,11 +63,11 @@ class OverviewFragment : Fragment() {
                 })
             // LinearLayoutManager(this, RecyclerView.VERTICAL, false)
             currencyRecycleView.layoutManager = GridLayoutManager(requireContext(), 1)
-        })
+        }
 
-        viewModel.error.observe(viewLifecycleOwner, { ex ->
+        viewModel.error.observe(viewLifecycleOwner) { ex ->
             showError(requireContext(), ex)
-        })
+        }
 
         binding.TWUserPoint.setOnClickListener {
             findNavController().navigate(OverviewFragmentDirections.actionOverviewFragmentToPortfolioFragment())

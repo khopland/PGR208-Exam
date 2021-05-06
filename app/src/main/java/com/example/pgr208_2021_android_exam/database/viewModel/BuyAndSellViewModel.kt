@@ -16,16 +16,6 @@ class BuyAndSellViewModel(application: Application) : AndroidViewModel(applicati
     private val repository: TransactionRepository
 
     val successLiveData: MutableLiveData<Boolean?> = MutableLiveData(null)
-    /*
-    BuyAndSellViewModel.successLiveData.observe(this, Observer { status ->
-        status?.let {
-            //Reset status value at first to prevent multitriggering
-            //and to be available to trigger action again
-            BuyAndSellViewModel.successLiveData.value = null
-            //Display Toast or snackbar
-        }
-    })
-    */
 
     init {
         val transactionDao = DataBase.getDatabase(application).transactionDao()
@@ -33,7 +23,7 @@ class BuyAndSellViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     //function to generate a new transaction
-    fun addTransaction(transaction: Transaction) {
+    private fun addTransaction(transaction: Transaction) {
         viewModelScope.launch(Dispatchers.IO) {
             successLiveData.postValue(repository.addTransaction(transaction))
         }

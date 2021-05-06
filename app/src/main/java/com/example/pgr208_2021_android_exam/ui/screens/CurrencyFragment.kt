@@ -52,20 +52,20 @@ class CurrencyFragment : Fragment() {
 
         mWalletViewModel.getWallet(cryptoType = cryptoCurrency.symbol)
 
-        viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, { selectedCurrency ->
+        viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner) { selectedCurrency ->
             renderCurrencyHeaderInfo(selectedCurrency)
-        })
+        }
 
-        mWalletViewModel.walletLiveData.observe(viewLifecycleOwner, { wallet ->
-            viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, {
+        mWalletViewModel.walletLiveData.observe(viewLifecycleOwner) { wallet ->
+            viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner) {
                 renderAmount(it, wallet)
-            })
-        })
+            }
+        }
 
 
-        mWalletViewModel.dollar.observe(viewLifecycleOwner, {
+        mWalletViewModel.dollar.observe(viewLifecycleOwner) {
             binding.btnBuy.isEnabled = (it != 0)
-        })
+        }
 
         binding.btnBuy.setOnClickListener {
             findNavController().navigate(

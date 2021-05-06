@@ -24,7 +24,7 @@ class TransactionsViewModel(application: Application) : AndroidViewModel(applica
     }
 
     //function to get all transactions
-    fun getAllTransaction() {
+    private fun getAllTransaction() {
         viewModelScope.launch(Dispatchers.IO) {
             _transactionLiveData.postValue(repository.getAllTransactions())
         }

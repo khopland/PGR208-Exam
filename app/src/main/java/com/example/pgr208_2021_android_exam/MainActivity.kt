@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
         startViewModel = ViewModelProvider(this).get(StartViewModel::class.java)
 
-        startViewModel.successLiveData.observe(this, { status ->
+        startViewModel.successLiveData.observe(this) { status ->
             status?.let {
                 if (status) {
                     startViewModel.successLiveData.value = null
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
                     toast.show()
                 }
             }
-        })
+        }
 
         return super.onCreateView(name, context, attrs)
     }
