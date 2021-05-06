@@ -6,7 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.pgr208_2021_android_exam.data.CoinCapService
-import com.example.pgr208_2021_android_exam.data.domain.*
+import com.example.pgr208_2021_android_exam.data.domain.CoinCapApi
+import com.example.pgr208_2021_android_exam.data.domain.CryptoCurrency
+import com.example.pgr208_2021_android_exam.data.domain.toDomainModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

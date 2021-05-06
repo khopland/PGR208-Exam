@@ -56,8 +56,8 @@ class CurrencyFragment : Fragment() {
             renderCurrencyHeaderInfo(selectedCurrency)
         })
 
-        mWalletViewModel.walletLiveData.observe(viewLifecycleOwner, {wallet ->
-            viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner,{
+        mWalletViewModel.walletLiveData.observe(viewLifecycleOwner, { wallet ->
+            viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, {
                 renderAmount(it, wallet)
             })
         })
@@ -85,7 +85,7 @@ class CurrencyFragment : Fragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun renderAmount(selectedCurrency: CryptoCurrency,wallet:Wallet?) {
+    private fun renderAmount(selectedCurrency: CryptoCurrency, wallet: Wallet?) {
         if (wallet == null) {
             binding.btnSell.isEnabled = false
             binding.currencyText.text = "you don't have this crypto"

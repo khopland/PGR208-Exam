@@ -108,9 +108,9 @@ class CurrencyBuyFragment : Fragment() {
                     // Navigating back to CurrencyFragment after successful buy
                     viewModel.selectedCryptoCurrency.observe(viewLifecycleOwner, {
                         findNavController().navigate(
-                                CurrencyBuyFragmentDirections.actionCurrencyBuyFragmentToCurrencyFragment(
-                                        it
-                                )
+                            CurrencyBuyFragmentDirections.actionCurrencyBuyFragmentToCurrencyFragment(
+                                it
+                            )
                         )
                     })
 

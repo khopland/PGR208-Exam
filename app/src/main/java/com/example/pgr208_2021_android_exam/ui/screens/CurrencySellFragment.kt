@@ -149,7 +149,8 @@ class CurrencySellFragment : Fragment() {
 
             val currencyRate = binding.tvCurrencyRate.text.toString().substring(1).toDouble()
 
-            val inputCryptoValue = if (field.isBlank() || field[0] == '.') 0.0  else binding.tvCryptoValue.text.toString().toDouble()
+            val inputCryptoValue =
+                if (field.isBlank() || field[0] == '.') 0.0 else binding.tvCryptoValue.text.toString().toDouble()
 
             val calculatedUSD = rounding(inputCryptoValue * currencyRate)
 

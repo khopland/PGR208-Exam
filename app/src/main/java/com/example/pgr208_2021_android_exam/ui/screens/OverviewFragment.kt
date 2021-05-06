@@ -32,7 +32,7 @@ class OverviewFragment : Fragment() {
     ): View {
 
         // Inflate the layout for this fragment
-        binding = FragmentOverviewBinding.inflate(inflater, container, false);
+        binding = FragmentOverviewBinding.inflate(inflater, container, false)
 
         // Instantiate the viewModel(s)
         viewModel = ViewModelProvider(this).get(OverViewModel::class.java)
