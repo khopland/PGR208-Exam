@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pgr208_2021_android_exam.data.getImg
+import com.example.pgr208_2021_android_exam.database.viewModel.OwnedWallet
 import com.example.pgr208_2021_android_exam.databinding.PortfolioCurrencyItemBinding
-import com.example.pgr208_2021_android_exam.ui.viewmodels.OwnedWallet
 
 class WalletAdapter(private val list: List<OwnedWallet>) :
     RecyclerView.Adapter<WalletAdapter.WalletViewHolder>() {
